@@ -1,0 +1,9 @@
+{
+ "name": "A.R. Molino de Viento · La Roca de la Sierra",
+ "short_name": "Molino de Viento",
+ "start_url": "./",
+ "display": "browser",
+ "background_color": "#1F2A1E",
+ "theme_color": "#1F2A1E",
+ "icons": [{ "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

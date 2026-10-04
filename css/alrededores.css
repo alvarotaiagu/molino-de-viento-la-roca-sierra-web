@@ -1,0 +1,27 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Módulo «Alrededores» (data-modulo="alrededores"): el pueblo, los planes y una
+   rosa de los vientos con las ciudades cercanas a la distancia medida.
+   Se quita con node scripts/quitar-alrededores.mjs; estilos.css no depende de él.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.alrededores { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5rem clamp(2rem, 5vw, 5rem); align-items: center; max-width: var(--ancho); margin: 0 auto; padding: clamp(3.5rem, 7vw, 6rem) var(--margen); }
+.alrededores__texto h2 { margin-bottom: 1.2rem; max-width: 18ch; }
+.alrededores__texto > p { color: var(--granito); max-width: 52ch; }
+.alrededores__planes { margin-top: 1.6rem; display: grid; }
+.alrededores__planes li { padding: .75rem 0 .75rem 1.6rem; border-bottom: 1px solid var(--linea); position: relative; }
+.alrededores__planes li::before { content: ""; position: absolute; left: 0; top: 1.3rem; width: 14px; height: 2px; background: var(--lima-texto); transform: rotate(-30deg); }
+.alrededores__planes a { color: var(--lima-texto); font-weight: 700; }
+.rosa { max-width: 520px; justify-self: center; width: 100%; }
+.rosa svg { width: 100%; height: auto; overflow: visible; }
+.rosa__guia { fill: none; stroke: var(--linea); stroke-width: 1.2; }
+.rosa__puntas path { fill: var(--piedra); stroke: var(--encina); stroke-width: 1.2; stroke-linejoin: round; }
+.rosa__norte { font: 400 22px var(--tipo-titular); fill: var(--encina); }
+.rosa__rutas path { fill: none; stroke: var(--lima-texto); stroke-width: 2.5; stroke-linecap: round; }
+.alrededores.es-esperando .rosa__rutas path { stroke-dasharray: var(--largo) var(--largo); stroke-dashoffset: var(--largo); transition: stroke-dashoffset 1.2s cubic-bezier(.65, 0, .2, 1); }
+.alrededores.es-esperando .rosa__rutas path.es-trazada { stroke-dashoffset: 0; }
+.rosa__ciudades circle { fill: var(--encina); }
+.rosa__ciudades text { font: 600 17px var(--tipo-texto); fill: var(--encina); }
+.rosa__ciudades .rosa__km { font-weight: 400; font-size: 15px; fill: var(--granito); }
+.rosa__casa { fill: var(--teja); stroke: var(--cal); stroke-width: 3; }
+@media (max-width: 860px) {
+  .alrededores { grid-template-columns: minmax(0, 1fr); }
+}

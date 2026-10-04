@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<!--
+  A.R. Molino de Viento · C. Vasco Núñez de Balboa, 2 · 06190 La Roca de la Sierra (Badajoz)
+  Registro AT-BA-00023: alojamiento rural, NO «casa rural» (categoría regulada que no tiene).
+  Concepto: «Aspas». Su logo es un molino a línea, en verde lima. El viento que
+  mueve las aspas es el hilo de la página: en la cortina el molino se traza y
+  arranca, y una ráfaga barre la capa oscura; después las aspas giran con la
+  velocidad del scroll y frenan con inercia, las ráfagas cruzan entre secciones,
+  los ocho arcos del porche enmarcan la galería y el sol los cruza.
+
+  El dibujo del molino de cada <svg data-molino> lo mete scripts/construir.mjs desde data/molino.json.
+  Datos reales y pendientes para el dueño: README.md.
+  Módulos que se pueden quitar: node scripts/quitar-alrededores.mjs · node scripts/quitar-sol.mjs
+-->
+<!-- ═══ [MANDO DE MAQUETA] AVISO: esta maqueta lleva un mando de demostración
+     (abajo a la izquierda, solo con ?revision en la URL) que cambia entre dos
+     densidades visuales. NO DEBE VIAJAR A PRODUCCIÓN: node scripts/quitar-mando.mjs
+     fin del bloque [MANDO DE MAQUETA] ═══ -->
+<html lang="es" class="sin-js densidad-aspas">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.R. Molino de Viento · Alojamiento rural en La Roca de la Sierra</title>
+<meta name="description" content="Una casa de piedra de 150 m² entre encinas y granito, a 700 m de La Roca de la Sierra (Badajoz). Se alquila entera: cuatro dormitorios dobles, dos baños, chimenea, barbacoa y un porche de ocho arcos, en una finca de 8 ha. Registro AT-BA-00023.">
+<meta name="theme-color" content="#1F2A1E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A.R. Molino de Viento · La Roca de la Sierra">
+<meta property="og:description" content="Una casa de piedra entre encinas y granito, para ocho personas, en una finca de 8 ha.">
+<meta property="og:image" content="assets/og-molino.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:ital,wght@0,400..700;1,400&display=swap">
+<link rel="stylesheet" href="css/estilos.css?v=cf326450">
+<link rel="stylesheet" href="css/sol.css?v=ccde7ae7" data-modulo="sol">
+<link rel="stylesheet" href="css/alrededores.css?v=09abac4a" data-modulo="alrededores">
+<script>
+/* Bloqueante a propósito: la clase de JS (y la densidad de la maqueta) se
+   resuelven antes del primer pintado. */
+(function () {
+  var h = document.documentElement;
+  h.classList.remove('sin-js');
+  h.classList.add('con-js');
+  /* red de seguridad: si main.js no llega, la cortina se va igual */
+  setTimeout(function () { h.classList.add('cortina-fuera'); }, 7000);
+  /* [MANDO DE MAQUETA] la densidad guardada solo cuenta en modo revisión (?revision) */
+  if (!/[?&]revision\b/.test(location.search)) return;
+  try {
+    var d = localStorage.getItem('molino-densidad');
+    if (d === 'sobria' || d === 'aspas') {
+      h.classList.remove('densidad-aspas', 'densidad-sobria');
+      h.classList.add('densidad-' + d);
+    }
+  } catch (e) {}
+  /* fin del bloque [MANDO DE MAQUETA] */
+})();
+</script>
+<noscript><style>.cortina{display:none!important}</style></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "A.R. Molino de Viento",
+  "description": "Alojamiento rural de alquiler completo para ocho personas: una casa de piedra de 150 m² con cuatro dormitorios dobles, dos baños, salón con chimenea, cocina equipada, barbacoa y un porche de ocho arcos, en la finca Huerta la Holguerina, a 700 m de La Roca de la Sierra. Registro AT-BA-00023.",
+  "image": "assets/og-molino.jpg",
+  "telephone": "+34 924 406 375",
+  "email": "info@ar-molinodeviento.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "C. Vasco Núñez de Balboa, 2",
+    "postalCode": "06190",
+    "addressLocality": "La Roca de la Sierra",
+    "addressRegion": "Badajoz",
+    "addressCountry": "ES"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 39.1101425, "longitude": -6.6737914 },
+  "numberOfRooms": 4
+}
+</script>
+</head>
+<body>
+<a class="salto" href="#contenido">Saltar al contenido</a>
+
+<!-- ═══════════════ cortina «Arranca el molino»: se traza, arranca y una ráfaga barre la capa ═══════════════ -->
+<div class="cortina" id="cortina" aria-hidden="true">
+  <div class="cortina__capa" id="cortina-capa">
+    <svg class="molino cortina__molino" id="cortina-molino"></svg>
+  </div>
+  <svg class="cortina__rafaga" id="cortina-rafaga" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+    <path pathLength="1" d="M-200 760C120 690 380 720 640 610S1080 430 1820 300"/>
+    <path pathLength="1" d="M-220 620C60 560 330 600 560 500S1000 330 1800 200"/>
+    <path pathLength="1" d="M-180 880C160 820 480 830 760 720S1240 560 1840 470"/>
+    <path pathLength="1" d="M-240 470C80 420 300 460 520 380S960 220 1780 90"/>
+    <path pathLength="1" d="M-160 1000C200 960 560 940 860 840S1300 700 1860 640"/>
+  </svg>
+</div>
+
+<header class="cabecera" id="cabecera">
+  <a class="cabecera__marca" href="#inicio" aria-label="A.R. Molino de Viento, inicio">
+    <svg class="molino molino--marca" data-molino="cabecera" viewBox="89 5 652 669" aria-hidden="true"><defs><mask id="molino-m-cabecera" maskUnits="userSpaceOnUse" x="89" y="5" width="652" height="669"><rect x="89" y="5" width="652" height="669" fill="#fff"/><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor molino__rotor--mascara"><path class="molino__hueco" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__hueco" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__hueco" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__hueco" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__hueco" r="19.8"/></g></g></mask></defs><g class="molino__torre" mask="url(#molino-m-cabecera)"><path pathLength="1" data-tipo="base" d="M140.0 635.0C141.0 636.1 143.1 638.6 144.7 639.9C146.2 641.2 144.0 641.0 147.1 640.9C150.3 640.7 153.7 639.6 159.0 639.2C164.3 638.8 163.1 638.7 171.0 639.0C178.9 639.3 188.9 639.7 195.0 640.6C201.1 641.4 197.2 640.7 198.6 642.7C199.9 644.7 200.0 647.6 201.2 649.7C202.4 651.7 199.3 651.0 204.1 652.0C208.9 653.0 204.1 653.3 223.0 654.0C241.9 654.7 273.3 654.6 290.0 655.0C306.7 655.4 292.4 655.8 299.0 656.0C305.6 656.2 307.7 656.4 320.0 656.0C332.3 655.6 340.3 654.4 355.0 654.0C369.7 653.6 378.0 653.8 387.0 654.0C396.0 654.2 387.2 654.8 396.0 655.0C404.8 655.2 413.6 654.6 427.0 655.0C440.4 655.4 445.6 656.6 457.0 657.0C468.4 657.4 473.2 657.2 479.0 657.0C484.8 656.8 481.2 657.1 483.4 656.1C485.6 655.2 486.0 655.2 489.0 652.7C492.0 650.1 494.9 647.5 497.1 644.7C499.3 641.9 497.9 650.3 499.0 640.0C500.1 629.7 501.3 614.3 502.0 598.0C502.7 581.7 502.2 575.0 502.0 566.0C501.8 557.0 501.2 565.8 501.0 557.0C500.8 548.2 501.2 535.2 501.0 526.0C500.8 516.8 499.6 530.9 500.0 515.0C500.4 499.1 501.7 480.7 502.9 453.7C504.2 426.7 504.8 419.3 505.7 392.3C506.6 365.3 506.7 344.5 507.0 331.0"/><path pathLength="1" data-tipo="linea" d="M200.0 322.0C199.9 322.9 199.3 324.2 199.4 326.0C199.5 327.8 198.4 327.1 200.4 330.0C202.5 332.9 206.5 335.9 208.8 339.0C211.0 342.1 210.2 334.5 210.7 344.0C211.2 353.5 211.4 366.2 211.0 382.0C210.6 397.8 209.4 404.6 209.0 416.0C208.6 427.4 211.0 397.9 209.0 434.0C207.0 470.1 202.2 534.5 200.0 580.0C197.8 625.5 199.2 627.6 199.0 641.0"/><path pathLength="1" data-tipo="linea" d="M503.0 292.0C495.7 286.9 484.8 280.0 470.0 269.0C455.2 258.0 459.6 259.8 435.9 242.2C412.2 224.7 379.5 201.3 362.1 189.2C344.8 177.1 359.8 187.8 357.0 187.1C354.2 186.5 352.0 185.9 349.2 186.2C346.4 186.5 351.1 183.5 344.2 188.6C337.3 193.6 336.3 193.7 317.8 209.2C299.2 224.8 284.3 237.2 259.9 259.2C235.4 281.2 219.1 297.1 206.7 309.1C194.2 321.2 204.5 311.6 203.4 314.0C202.4 316.4 201.9 318.5 201.9 320.0C201.9 321.5 201.0 320.8 203.4 320.7C205.9 320.5 201.4 321.6 213.0 319.4C224.6 317.3 232.7 314.0 256.0 310.8C279.3 307.6 294.8 306.3 319.0 305.0C343.2 303.7 347.3 304.6 366.0 305.0C384.7 305.4 384.0 305.1 404.0 307.0C424.0 308.9 440.9 311.2 457.0 313.7C473.1 316.1 472.6 317.0 477.0 318.0"/><path pathLength="1" data-tipo="linea" d="M252.0 653.0C251.9 639.4 251.7 614.3 251.7 591.0C251.7 567.7 251.8 557.3 252.0 547.0C252.2 536.7 252.2 545.2 252.7 544.1C253.2 543.0 253.4 542.8 254.3 542.1C255.3 541.5 247.8 541.8 257.0 541.1C266.2 540.4 282.4 539.0 296.0 539.0C309.6 539.0 313.0 540.2 319.0 541.3C325.0 542.5 321.8 542.4 323.2 544.1C324.7 545.8 324.9 536.3 325.6 549.0C326.2 561.7 325.7 588.4 326.0 602.0C326.3 615.6 326.8 602.2 327.0 611.0C327.2 619.8 327.2 632.3 327.0 642.0C326.8 651.7 326.2 652.1 326.0 655.0"/><path pathLength="1" data-tipo="hueco" d="M291.6 330.8C291.2 331.3 290.4 330.8 290.0 333.0C289.6 335.2 289.4 336.6 290.0 341.0C290.6 345.4 290.2 349.7 292.6 352.8C295.0 355.9 297.4 354.6 301.0 355.0C304.6 355.4 306.8 355.1 309.0 354.8C311.2 354.5 310.1 354.6 310.8 353.8C311.5 353.0 311.7 354.0 312.0 351.0C312.3 348.0 312.4 344.0 312.0 340.0C311.6 336.0 311.1 334.9 310.2 333.0C309.3 331.1 309.6 331.9 308.0 331.2C306.4 330.5 306.4 330.2 303.0 330.0C299.6 329.8 295.1 330.2 292.6 330.4C290.1 330.6 291.8 330.7 291.6 330.8Z"/><path pathLength="1" data-tipo="hueco" d="M379.2 331.6C381.4 331.5 385.4 330.8 389.0 331.0C392.6 331.2 393.9 327.5 395.4 332.6C396.9 337.7 398.3 349.5 395.6 354.4C392.9 359.3 386.5 355.2 383.0 355.0C379.5 354.8 380.9 356.0 379.8 353.4C378.7 350.8 378.3 347.7 378.0 343.0C377.7 338.3 378.3 334.7 378.6 332.2C378.9 329.7 379.1 331.7 379.2 331.6Z"/><path pathLength="1" data-tipo="hueco" d="M452.6 333.2C452.2 333.8 451.2 331.2 451.0 336.0C450.8 340.8 450.1 350.2 451.6 354.8C453.1 359.4 454.0 356.6 458.0 357.0C462.0 357.4 466.7 357.7 469.6 356.4C472.5 355.1 471.3 355.4 471.0 351.0C470.7 346.6 471.0 340.4 468.4 336.4C465.8 332.4 462.3 333.4 459.0 332.6C455.7 331.8 455.0 332.5 453.6 332.6C452.2 332.7 452.8 333.1 452.6 333.2Z"/><path pathLength="1" data-tipo="hueco" d="M234.4 335.6C233.7 335.9 232.2 336.1 231.2 336.8C230.2 337.5 230.1 335.2 230.0 339.0C229.9 342.8 229.9 349.5 230.6 354.0C231.3 358.5 230.7 358.1 233.2 359.4C235.7 360.7 238.6 360.4 242.0 360.0C245.4 359.6 247.1 362.8 248.6 357.6C250.1 352.4 249.2 341.2 248.8 336.2C248.4 331.2 249.9 335.2 247.0 335.0C244.1 334.8 238.4 335.3 235.6 335.4C232.8 335.5 234.7 335.6 234.4 335.6Z"/><path pathLength="1" data-tipo="hueco" d="M272.4 396.6C271.2 396.8 268.6 396.6 267.0 397.6C265.4 398.6 265.7 395.9 265.0 401.0C264.3 406.1 264.0 415.5 264.0 421.0C264.0 426.5 264.7 421.2 265.0 426.0C265.3 430.8 264.9 438.9 265.2 443.0C265.5 447.1 265.4 444.1 266.2 444.8C267.0 445.5 264.2 445.7 269.0 446.0C273.8 446.3 283.0 446.3 288.0 446.0C293.0 445.7 290.5 446.1 291.8 444.6C293.1 443.1 293.3 443.1 294.0 439.0C294.7 434.9 295.3 434.6 295.0 426.0C294.7 417.4 293.7 406.2 292.8 400.0C291.9 393.8 292.3 398.7 291.0 398.0C289.7 397.3 290.8 397.4 287.0 397.0C283.2 396.6 276.8 396.5 273.6 396.4C270.4 396.3 272.7 396.6 272.4 396.6Z"/><path pathLength="1" data-tipo="hierba" d="M109.0 653.0C109.7 652.8 110.2 652.2 112.0 652.0C113.8 651.8 112.6 651.6 117.0 652.0C121.4 652.4 128.3 654.0 132.0 654.0C135.7 654.0 133.4 653.3 134.0 652.0C134.6 650.7 134.0 649.3 134.7 648.0C135.3 646.7 136.5 646.4 137.0 646.0"/><path pathLength="1" data-tipo="hierba" d="M140.0 648.0C141.8 649.3 146.2 652.7 148.0 654.0"/><path pathLength="1" data-tipo="hierba" d="M160.0 653.0C159.8 652.6 160.4 652.5 159.0 651.0C157.6 649.5 155.4 648.5 153.7 646.3C151.9 644.1 151.6 642.2 151.0 641.0"/><path pathLength="1" data-tipo="hierba" d="M152.0 630.0C153.0 631.1 155.2 633.0 156.3 635.0C157.4 637.0 156.9 638.1 157.0 639.0"/><path pathLength="1" data-tipo="hierba" d="M170.0 648.0C169.1 646.2 166.9 641.8 166.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M186.0 654.0C184.6 652.0 181.4 648.1 179.7 645.0C177.9 641.9 178.4 641.1 178.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M643.0 665.0C641.9 664.7 643.3 664.3 638.0 663.7C632.7 663.0 632.9 662.4 619.0 662.0C605.1 661.6 586.2 662.5 575.0 661.8C563.8 661.0 572.6 661.7 567.9 658.7C563.2 655.6 557.7 650.8 553.8 648.0C549.8 645.2 551.7 646.5 550.0 646.1C548.3 645.7 548.2 644.9 546.2 646.3C544.2 647.8 542.7 651.2 540.9 652.6C539.0 653.9 539.4 653.2 537.8 652.6C536.2 651.9 535.8 651.5 533.7 649.4C531.5 647.3 530.2 644.9 528.1 643.0C526.1 641.1 525.5 641.4 524.3 641.0C523.2 640.6 523.5 640.8 522.9 641.1C522.3 641.5 522.3 639.4 521.6 642.6C520.8 645.7 520.4 652.4 519.7 655.6C519.0 658.7 519.1 656.6 518.3 656.9C517.5 657.2 517.8 657.4 516.0 656.9C514.2 656.4 514.1 657.5 510.3 654.7C506.6 651.8 501.5 646.3 499.0 644.0"/></g><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor"><path class="molino__pala" pathLength="1" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__pala" pathLength="1" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__pala" pathLength="1" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__pala" pathLength="1" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__cubo" pathLength="1" r="19.8"/></g></g></svg>
+    <span class="cabecera__nombre">Molino de Viento<small>alojamiento rural · La Roca de la Sierra</small></span>
+  </a>
+  <button class="cabecera__menu" id="hamburguesa" type="button" aria-expanded="false" aria-controls="menu">
+    <span class="visualmente-oculto">Abrir menú</span>
+    <span class="cabecera__raya" aria-hidden="true"></span><span class="cabecera__raya" aria-hidden="true"></span>
+  </button>
+  <nav class="cabecera__nav" id="menu" aria-label="Principal">
+    <a href="#la-casa">La casa</a>
+    <a href="#arcos">Los arcos</a>
+    <a href="#finca">La finca</a>
+    <a href="#alrededores" data-modulo="alrededores">Alrededores</a>
+    <a href="#opiniones">Opiniones</a>
+    <a href="#tarifas">Tarifas</a>
+    <a class="cabecera__llamar" href="tel:+34676516272">Llamar · 676 516 272</a>
+    <a class="cabecera__fechas" href="#fechas">Consultar fechas</a>
+  </nav>
+</header>
+
+<main id="contenido">
+
+  <!-- ═══════════════ 1 · hero ═══════════════ -->
+  <section class="hero" id="inicio" aria-labelledby="hero-titulo">
+    <div class="hero__texto">
+      <p class="hero__nombre">A.R. Molino de Viento <span>· alojamiento rural</span></p>
+      <h1 class="hero__titulo" id="hero-titulo" data-revelar="letras">Una casa de piedra entre encinas y granito, a 700 m de La Roca de la Sierra.</h1>
+      <dl class="hero__datos">
+        <div><dt>dormitorios</dt><dd>4</dd></div>
+        <div><dt>personas</dt><dd>8</dd></div>
+        <div><dt>de finca</dt><dd>8 ha</dd></div>
+      </dl>
+      <div class="hero__acciones">
+        <a class="boton boton--lima iman" href="#fechas">Consultar fechas</a>
+        <a class="boton boton--claro" href="tel:+34676516272">Llamar · 676 516 272</a>
+      </div>
+    </div>
+    <div class="hero__escena">
+      <figure class="hero__arco">
+        <picture data-foto="dehesa-casa" data-sizes="(max-width: 860px) 92vw, 40vw" data-carga="eager">
+          <source type="image/avif" srcset="assets/fotos/dehesa-casa-480.avif 480w, assets/fotos/dehesa-casa-960.avif 960w, assets/fotos/dehesa-casa-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 40vw">
+          <source type="image/webp" srcset="assets/fotos/dehesa-casa-480.webp 480w, assets/fotos/dehesa-casa-960.webp 960w, assets/fotos/dehesa-casa-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 40vw">
+          <img src="assets/fotos/dehesa-casa-1200.jpg" srcset="assets/fotos/dehesa-casa-480.jpg 480w, assets/fotos/dehesa-casa-960.jpg 960w, assets/fotos/dehesa-casa-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 40vw" width="1200" height="802" alt="La casa de piedra en la dehesa, con la luz baja de la tarde" decoding="async" fetchpriority="high">
+        </picture>
+      </figure>
+      <svg class="molino molino--hero" id="hero-molino" data-molino="hero" viewBox="89 5 652 669" role="img" aria-label="El molino del logo, con las aspas girando"><defs><mask id="molino-m-hero" maskUnits="userSpaceOnUse" x="89" y="5" width="652" height="669"><rect x="89" y="5" width="652" height="669" fill="#fff"/><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor molino__rotor--mascara"><path class="molino__hueco" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__hueco" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__hueco" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__hueco" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__hueco" r="19.8"/></g></g></mask></defs><g class="molino__torre" mask="url(#molino-m-hero)"><path pathLength="1" data-tipo="base" d="M140.0 635.0C141.0 636.1 143.1 638.6 144.7 639.9C146.2 641.2 144.0 641.0 147.1 640.9C150.3 640.7 153.7 639.6 159.0 639.2C164.3 638.8 163.1 638.7 171.0 639.0C178.9 639.3 188.9 639.7 195.0 640.6C201.1 641.4 197.2 640.7 198.6 642.7C199.9 644.7 200.0 647.6 201.2 649.7C202.4 651.7 199.3 651.0 204.1 652.0C208.9 653.0 204.1 653.3 223.0 654.0C241.9 654.7 273.3 654.6 290.0 655.0C306.7 655.4 292.4 655.8 299.0 656.0C305.6 656.2 307.7 656.4 320.0 656.0C332.3 655.6 340.3 654.4 355.0 654.0C369.7 653.6 378.0 653.8 387.0 654.0C396.0 654.2 387.2 654.8 396.0 655.0C404.8 655.2 413.6 654.6 427.0 655.0C440.4 655.4 445.6 656.6 457.0 657.0C468.4 657.4 473.2 657.2 479.0 657.0C484.8 656.8 481.2 657.1 483.4 656.1C485.6 655.2 486.0 655.2 489.0 652.7C492.0 650.1 494.9 647.5 497.1 644.7C499.3 641.9 497.9 650.3 499.0 640.0C500.1 629.7 501.3 614.3 502.0 598.0C502.7 581.7 502.2 575.0 502.0 566.0C501.8 557.0 501.2 565.8 501.0 557.0C500.8 548.2 501.2 535.2 501.0 526.0C500.8 516.8 499.6 530.9 500.0 515.0C500.4 499.1 501.7 480.7 502.9 453.7C504.2 426.7 504.8 419.3 505.7 392.3C506.6 365.3 506.7 344.5 507.0 331.0"/><path pathLength="1" data-tipo="linea" d="M200.0 322.0C199.9 322.9 199.3 324.2 199.4 326.0C199.5 327.8 198.4 327.1 200.4 330.0C202.5 332.9 206.5 335.9 208.8 339.0C211.0 342.1 210.2 334.5 210.7 344.0C211.2 353.5 211.4 366.2 211.0 382.0C210.6 397.8 209.4 404.6 209.0 416.0C208.6 427.4 211.0 397.9 209.0 434.0C207.0 470.1 202.2 534.5 200.0 580.0C197.8 625.5 199.2 627.6 199.0 641.0"/><path pathLength="1" data-tipo="linea" d="M503.0 292.0C495.7 286.9 484.8 280.0 470.0 269.0C455.2 258.0 459.6 259.8 435.9 242.2C412.2 224.7 379.5 201.3 362.1 189.2C344.8 177.1 359.8 187.8 357.0 187.1C354.2 186.5 352.0 185.9 349.2 186.2C346.4 186.5 351.1 183.5 344.2 188.6C337.3 193.6 336.3 193.7 317.8 209.2C299.2 224.8 284.3 237.2 259.9 259.2C235.4 281.2 219.1 297.1 206.7 309.1C194.2 321.2 204.5 311.6 203.4 314.0C202.4 316.4 201.9 318.5 201.9 320.0C201.9 321.5 201.0 320.8 203.4 320.7C205.9 320.5 201.4 321.6 213.0 319.4C224.6 317.3 232.7 314.0 256.0 310.8C279.3 307.6 294.8 306.3 319.0 305.0C343.2 303.7 347.3 304.6 366.0 305.0C384.7 305.4 384.0 305.1 404.0 307.0C424.0 308.9 440.9 311.2 457.0 313.7C473.1 316.1 472.6 317.0 477.0 318.0"/><path pathLength="1" data-tipo="linea" d="M252.0 653.0C251.9 639.4 251.7 614.3 251.7 591.0C251.7 567.7 251.8 557.3 252.0 547.0C252.2 536.7 252.2 545.2 252.7 544.1C253.2 543.0 253.4 542.8 254.3 542.1C255.3 541.5 247.8 541.8 257.0 541.1C266.2 540.4 282.4 539.0 296.0 539.0C309.6 539.0 313.0 540.2 319.0 541.3C325.0 542.5 321.8 542.4 323.2 544.1C324.7 545.8 324.9 536.3 325.6 549.0C326.2 561.7 325.7 588.4 326.0 602.0C326.3 615.6 326.8 602.2 327.0 611.0C327.2 619.8 327.2 632.3 327.0 642.0C326.8 651.7 326.2 652.1 326.0 655.0"/><path pathLength="1" data-tipo="hueco" d="M291.6 330.8C291.2 331.3 290.4 330.8 290.0 333.0C289.6 335.2 289.4 336.6 290.0 341.0C290.6 345.4 290.2 349.7 292.6 352.8C295.0 355.9 297.4 354.6 301.0 355.0C304.6 355.4 306.8 355.1 309.0 354.8C311.2 354.5 310.1 354.6 310.8 353.8C311.5 353.0 311.7 354.0 312.0 351.0C312.3 348.0 312.4 344.0 312.0 340.0C311.6 336.0 311.1 334.9 310.2 333.0C309.3 331.1 309.6 331.9 308.0 331.2C306.4 330.5 306.4 330.2 303.0 330.0C299.6 329.8 295.1 330.2 292.6 330.4C290.1 330.6 291.8 330.7 291.6 330.8Z"/><path pathLength="1" data-tipo="hueco" d="M379.2 331.6C381.4 331.5 385.4 330.8 389.0 331.0C392.6 331.2 393.9 327.5 395.4 332.6C396.9 337.7 398.3 349.5 395.6 354.4C392.9 359.3 386.5 355.2 383.0 355.0C379.5 354.8 380.9 356.0 379.8 353.4C378.7 350.8 378.3 347.7 378.0 343.0C377.7 338.3 378.3 334.7 378.6 332.2C378.9 329.7 379.1 331.7 379.2 331.6Z"/><path pathLength="1" data-tipo="hueco" d="M452.6 333.2C452.2 333.8 451.2 331.2 451.0 336.0C450.8 340.8 450.1 350.2 451.6 354.8C453.1 359.4 454.0 356.6 458.0 357.0C462.0 357.4 466.7 357.7 469.6 356.4C472.5 355.1 471.3 355.4 471.0 351.0C470.7 346.6 471.0 340.4 468.4 336.4C465.8 332.4 462.3 333.4 459.0 332.6C455.7 331.8 455.0 332.5 453.6 332.6C452.2 332.7 452.8 333.1 452.6 333.2Z"/><path pathLength="1" data-tipo="hueco" d="M234.4 335.6C233.7 335.9 232.2 336.1 231.2 336.8C230.2 337.5 230.1 335.2 230.0 339.0C229.9 342.8 229.9 349.5 230.6 354.0C231.3 358.5 230.7 358.1 233.2 359.4C235.7 360.7 238.6 360.4 242.0 360.0C245.4 359.6 247.1 362.8 248.6 357.6C250.1 352.4 249.2 341.2 248.8 336.2C248.4 331.2 249.9 335.2 247.0 335.0C244.1 334.8 238.4 335.3 235.6 335.4C232.8 335.5 234.7 335.6 234.4 335.6Z"/><path pathLength="1" data-tipo="hueco" d="M272.4 396.6C271.2 396.8 268.6 396.6 267.0 397.6C265.4 398.6 265.7 395.9 265.0 401.0C264.3 406.1 264.0 415.5 264.0 421.0C264.0 426.5 264.7 421.2 265.0 426.0C265.3 430.8 264.9 438.9 265.2 443.0C265.5 447.1 265.4 444.1 266.2 444.8C267.0 445.5 264.2 445.7 269.0 446.0C273.8 446.3 283.0 446.3 288.0 446.0C293.0 445.7 290.5 446.1 291.8 444.6C293.1 443.1 293.3 443.1 294.0 439.0C294.7 434.9 295.3 434.6 295.0 426.0C294.7 417.4 293.7 406.2 292.8 400.0C291.9 393.8 292.3 398.7 291.0 398.0C289.7 397.3 290.8 397.4 287.0 397.0C283.2 396.6 276.8 396.5 273.6 396.4C270.4 396.3 272.7 396.6 272.4 396.6Z"/><path pathLength="1" data-tipo="hierba" d="M109.0 653.0C109.7 652.8 110.2 652.2 112.0 652.0C113.8 651.8 112.6 651.6 117.0 652.0C121.4 652.4 128.3 654.0 132.0 654.0C135.7 654.0 133.4 653.3 134.0 652.0C134.6 650.7 134.0 649.3 134.7 648.0C135.3 646.7 136.5 646.4 137.0 646.0"/><path pathLength="1" data-tipo="hierba" d="M140.0 648.0C141.8 649.3 146.2 652.7 148.0 654.0"/><path pathLength="1" data-tipo="hierba" d="M160.0 653.0C159.8 652.6 160.4 652.5 159.0 651.0C157.6 649.5 155.4 648.5 153.7 646.3C151.9 644.1 151.6 642.2 151.0 641.0"/><path pathLength="1" data-tipo="hierba" d="M152.0 630.0C153.0 631.1 155.2 633.0 156.3 635.0C157.4 637.0 156.9 638.1 157.0 639.0"/><path pathLength="1" data-tipo="hierba" d="M170.0 648.0C169.1 646.2 166.9 641.8 166.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M186.0 654.0C184.6 652.0 181.4 648.1 179.7 645.0C177.9 641.9 178.4 641.1 178.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M643.0 665.0C641.9 664.7 643.3 664.3 638.0 663.7C632.7 663.0 632.9 662.4 619.0 662.0C605.1 661.6 586.2 662.5 575.0 661.8C563.8 661.0 572.6 661.7 567.9 658.7C563.2 655.6 557.7 650.8 553.8 648.0C549.8 645.2 551.7 646.5 550.0 646.1C548.3 645.7 548.2 644.9 546.2 646.3C544.2 647.8 542.7 651.2 540.9 652.6C539.0 653.9 539.4 653.2 537.8 652.6C536.2 651.9 535.8 651.5 533.7 649.4C531.5 647.3 530.2 644.9 528.1 643.0C526.1 641.1 525.5 641.4 524.3 641.0C523.2 640.6 523.5 640.8 522.9 641.1C522.3 641.5 522.3 639.4 521.6 642.6C520.8 645.7 520.4 652.4 519.7 655.6C519.0 658.7 519.1 656.6 518.3 656.9C517.5 657.2 517.8 657.4 516.0 656.9C514.2 656.4 514.1 657.5 510.3 654.7C506.6 651.8 501.5 646.3 499.0 644.0"/></g><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor"><path class="molino__pala" pathLength="1" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__pala" pathLength="1" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__pala" pathLength="1" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__pala" pathLength="1" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__cubo" pathLength="1" r="19.8"/></g></g></svg>
+    </div>
+  </section>
+
+  <div class="rafaga" aria-hidden="true"><svg viewBox="0 0 1600 120"><path pathLength="1" d="M0 70C260 40 520 96 800 64S1300 30 1600 58"/><path pathLength="1" d="M120 92C380 70 640 108 900 86S1360 60 1560 80"/><path pathLength="1" d="M60 40C320 18 580 60 840 36S1300 8 1520 30"/></svg></div>
+
+  <!-- ═══════════════ 2 · la casa ═══════════════ -->
+  <section class="casa" id="la-casa" aria-labelledby="casa-titulo">
+    <div class="casa__texto">
+      <p class="antetitulo">La casa</p>
+      <h2 class="casa__titulo" id="casa-titulo" data-revelar="letras">150 m² de piedra, hechos sin estorbar al paisaje.</h2>
+      <p class="casa__cuerpo">Arquitectura popular, levantada entera en piedra intentando no alterar el entorno. Dentro, cuatro dormitorios dobles (dos con camas separadas y dos de matrimonio), dos baños completos, un salón comedor amplio con chimenea y la cocina con todo su equipo. Fuera, la barbacoa y un porche grande de ocho arcos sobre columnas de granito.</p>
+      <p class="casa__entera">Se alquila la casa <strong>entera</strong>, para vosotros solos, y se paga por persona.</p>
+      <ul class="cifras" aria-label="La casa en cifras">
+        <li><b><span data-contar="150">150</span> m²</b><span>de piedra</span></li>
+        <li><b data-contar="4">4</b><span>dormitorios dobles</span></li>
+        <li><b data-contar="2">2</b><span>baños completos</span></li>
+        <li><b data-contar="8">8</b><span>arcos en el porche</span></li>
+      </ul>
+    </div>
+    <figure class="casa__foto" id="casa-foto">
+      <div class="casa__marco" id="casa-marco">
+        <picture data-foto="porche" data-sizes="(max-width: 860px) 92vw, 42vw">
+          <source type="image/avif" srcset="assets/fotos/porche-480.avif 480w, assets/fotos/porche-960.avif 960w, assets/fotos/porche-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 42vw">
+          <source type="image/webp" srcset="assets/fotos/porche-480.webp 480w, assets/fotos/porche-960.webp 960w, assets/fotos/porche-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 42vw">
+          <img src="assets/fotos/porche-1200.jpg" srcset="assets/fotos/porche-480.jpg 480w, assets/fotos/porche-960.jpg 960w, assets/fotos/porche-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 42vw" width="1200" height="802" alt="El porche por dentro: columnas de granito, arcos de ladrillo y barandilla de celosía" decoding="async" loading="lazy">
+        </picture>
+      </div>
+      <figcaption>El porche: columnas de granito y arcos de ladrillo.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ═══════════════ 3 · ocho arcos (galería anclada en horizontal) ═══════════════ -->
+  <section class="arcos" id="arcos" aria-labelledby="arcos-titulo">
+    <div class="arcos__cabeza">
+      <p class="antetitulo">Ocho arcos</p>
+      <h2 id="arcos-titulo" data-revelar="palabras">Ocho arcos, ocho rincones de la casa.</h2>
+      <p>Pulsad cada uno para ver sus fotos.</p>
+    </div>
+    <div class="arcos__marco" id="arcos-marco">
+      <div class="arcos__carril" id="arcos-carril" role="group" aria-label="Rincones de la casa y la finca">
+        <button class="arco" type="button" data-panel="porche"><span class="arco__hueco"><picture data-foto="porche-arcos" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/porche-arcos-480.avif 480w, assets/fotos/porche-arcos-960.avif 960w, assets/fotos/porche-arcos-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/porche-arcos-480.webp 480w, assets/fotos/porche-arcos-960.webp 960w, assets/fotos/porche-arcos-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/porche-arcos-1200.jpg" srcset="assets/fotos/porche-arcos-480.jpg 480w, assets/fotos/porche-arcos-960.jpg 960w, assets/fotos/porche-arcos-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="804" alt="La dehesa vista desde el porche, entre dos arcos" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">01</span><b>El porche</b><span>Ocho arcos de ladrillo sobre columnas de granito, mirando al saliente y al poniente.</span></span></button>
+        <button class="arco" type="button" data-panel="salon"><span class="arco__hueco"><picture data-foto="salon" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/salon-480.avif 480w, assets/fotos/salon-960.avif 960w, assets/fotos/salon-1199.avif 1199w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/salon-480.webp 480w, assets/fotos/salon-960.webp 960w, assets/fotos/salon-1199.webp 1199w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/salon-1199.jpg" srcset="assets/fotos/salon-480.jpg 480w, assets/fotos/salon-960.jpg 960w, assets/fotos/salon-1199.jpg 1199w" sizes="(max-width: 860px) 70vw, 24vw" width="1199" height="802" alt="Salón comedor con chimenea, techo de vigas y un arco de ladrillo" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">02</span><b>El salón</b><span>Amplio, con chimenea, techo de vigas y la mesa del comedor.</span></span></button>
+        <button class="arco" type="button" data-panel="cocina"><span class="arco__hueco"><picture data-foto="cocina" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/cocina-480.avif 480w, assets/fotos/cocina-960.avif 960w, assets/fotos/cocina-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/cocina-480.webp 480w, assets/fotos/cocina-960.webp 960w, assets/fotos/cocina-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/cocina-1200.jpg" srcset="assets/fotos/cocina-480.jpg 480w, assets/fotos/cocina-960.jpg 960w, assets/fotos/cocina-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="802" alt="Cocina comedor bajo un arco de ladrillo, con la mesa puesta" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">03</span><b>La cocina</b><span>Totalmente equipada, bajo un arco de ladrillo.</span></span></button>
+        <button class="arco" type="button" data-panel="dormitorios"><span class="arco__hueco"><picture data-foto="dormitorio" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/dormitorio-480.avif 480w, assets/fotos/dormitorio-960.avif 960w, assets/fotos/dormitorio-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/dormitorio-480.webp 480w, assets/fotos/dormitorio-960.webp 960w, assets/fotos/dormitorio-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/dormitorio-1200.jpg" srcset="assets/fotos/dormitorio-480.jpg 480w, assets/fotos/dormitorio-960.jpg 960w, assets/fotos/dormitorio-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="802" alt="Dormitorio de matrimonio con cama de forja" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">04</span><b>Los dormitorios</b><span>Cuatro dobles: dos con camas separadas y dos de matrimonio.</span></span></button>
+        <button class="arco" type="button" data-panel="barbacoa"><span class="arco__hueco"><picture data-foto="barbacoa" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/barbacoa-480.avif 480w, assets/fotos/barbacoa-960.avif 960w, assets/fotos/barbacoa-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/barbacoa-480.webp 480w, assets/fotos/barbacoa-960.webp 960w, assets/fotos/barbacoa-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/barbacoa-1200.jpg" srcset="assets/fotos/barbacoa-480.jpg 480w, assets/fotos/barbacoa-960.jpg 960w, assets/fotos/barbacoa-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="802" alt="La barbacoa de piedra bajo una encina, con su mesa" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">05</span><b>La barbacoa</b><span>Bajo una encina, con su mesa de piedra.</span></span></button>
+        <button class="arco" type="button" data-panel="escalinata"><span class="arco__hueco"><picture data-foto="escalinata" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/escalinata-480.avif 480w, assets/fotos/escalinata-960.avif 960w, assets/fotos/escalinata-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/escalinata-480.webp 480w, assets/fotos/escalinata-960.webp 960w, assets/fotos/escalinata-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/escalinata-1200.jpg" srcset="assets/fotos/escalinata-480.jpg 480w, assets/fotos/escalinata-960.jpg 960w, assets/fotos/escalinata-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="803" alt="Escalinata de piedra entre las rocas, subiendo hasta la casa" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">06</span><b>La escalinata</b><span>Peldaños de piedra entre las rocas, hasta la casa.</span></span></button>
+        <button class="arco" type="button" data-panel="portada"><span class="arco__hueco"><picture data-foto="portada" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/portada-480.avif 480w, assets/fotos/portada-960.avif 960w, assets/fotos/portada-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/portada-480.webp 480w, assets/fotos/portada-960.webp 960w, assets/fotos/portada-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/portada-1200.jpg" srcset="assets/fotos/portada-480.jpg 480w, assets/fotos/portada-960.jpg 960w, assets/fotos/portada-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="804" alt="Portada de piedra con arco y verja; en el muro, la placa de alojamiento turístico" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">07</span><b>La portada</b><span>El arco de piedra por el que se entra a la finca.</span></span></button>
+        <button class="arco" type="button" data-panel="charca"><span class="arco__hueco"><picture data-foto="charca" data-sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/avif" srcset="assets/fotos/charca-480.avif 480w, assets/fotos/charca-960.avif 960w, assets/fotos/charca-1200.avif 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <source type="image/webp" srcset="assets/fotos/charca-480.webp 480w, assets/fotos/charca-960.webp 960w, assets/fotos/charca-1200.webp 1200w" sizes="(max-width: 860px) 70vw, 24vw">
+  <img src="assets/fotos/charca-1200.jpg" srcset="assets/fotos/charca-480.jpg 480w, assets/fotos/charca-960.jpg 960w, assets/fotos/charca-1200.jpg 1200w" sizes="(max-width: 860px) 70vw, 24vw" width="1200" height="804" alt="La charca de la finca, rodeada de encinas" decoding="async" loading="lazy">
+</picture><svg class="arco__ladrillo" viewBox="0 0 300 400" aria-hidden="true"><path class="arco__fuera" pathLength="1" d="M4 400V150A146 146 0 0 1 296 150V400"/><path class="arco__dentro" pathLength="1" d="M18 400V150A132 132 0 0 1 282 150V400"/><path class="arco__dovelas" d="M18 150H4M23 110L10 104M38 75L27 66M61 47L52 35M90 26L84 13M121 13L118 0M150 18V4M179 13L182 0M210 26L216 13M239 47L248 35M262 75L273 66M277 110L290 104M282 150H296"/></svg></span><span class="arco__pie"><span class="arco__num">08</span><b>La charca</b><span>Dentro de la finca, entre encinas.</span></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ [MANDO DE MAQUETA] galería completa: solo existe en la versión sobria ═══ -->
+  <section class="completa" id="galeria-completa" aria-labelledby="completa-titulo">
+    <div class="completa__cabeza">
+      <p class="antetitulo">Todas las fotos</p>
+      <h2 id="completa-titulo">La casa y la finca, foto a foto</h2>
+      <div class="completa__filtros" role="group" aria-label="Filtrar las fotos" id="completa-filtros"></div>
+    </div>
+    <ul class="completa__rejilla" id="completa-rejilla"></ul>
+  </section>
+  <!-- fin del bloque [MANDO DE MAQUETA] ═══ -->
+
+  <!-- [MÓDULO SOL] 4 · del saliente al poniente: se quita con node scripts/quitar-sol.mjs -->
+  <section class="sol" id="sol" data-modulo="sol" aria-labelledby="sol-titulo">
+    <div class="sol__cabeza">
+      <p class="antetitulo">Del saliente al poniente</p>
+      <h2 id="sol-titulo" data-revelar="palabras">El porche mira a los dos lados.</h2>
+      <p>Por la mañana el sol sale por un extremo del porche; por la tarde se pone por el otro.</p>
+    </div>
+    <div class="sol__escena" id="sol-escena">
+      <div class="sol__cielo" id="sol-cielo"></div>
+      <svg class="sol__dibujo" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <circle class="sol__astro" id="sol-astro" cx="0" cy="0" r="54"/>
+        <path class="sol__muro" fill-rule="evenodd" d="M-400 -200H2000V900H-400ZM60 700V330A80 80 0 0 1 220 330V700ZM250 700V330A80 80 0 0 1 410 330V700ZM440 700V330A80 80 0 0 1 600 330V700ZM630 700V330A80 80 0 0 1 790 330V700ZM820 700V330A80 80 0 0 1 980 330V700ZM1010 700V330A80 80 0 0 1 1170 330V700ZM1200 700V330A80 80 0 0 1 1360 330V700ZM1390 700V330A80 80 0 0 1 1550 330V700Z"/>
+        <path class="sol__celosia" d="M60 610L100 650L140 610L180 650L220 610M60 650L100 610L140 650L180 610L220 650M250 610L290 650L330 610L370 650L410 610M250 650L290 610L330 650L370 610L410 650M440 610L480 650L520 610L560 650L600 610M440 650L480 610L520 650L560 610L600 650M630 610L670 650L710 610L750 650L790 610M630 650L670 610L710 650L750 610L790 650M820 610L860 650L900 610L940 650L980 610M820 650L860 610L900 650L940 610L980 650M1010 610L1050 650L1090 610L1130 650L1170 610M1010 650L1050 610L1090 650L1130 610L1170 650M1200 610L1240 650L1280 610L1320 650L1360 610M1200 650L1240 610L1280 650L1320 610L1360 650M1390 610L1430 650L1470 610L1510 650L1550 610M1390 650L1430 610L1470 650L1510 610L1550 650M60 604H1550M60 656H1550"/>
+      </svg>
+      <p class="sol__rotulo sol__rotulo--saliente">Saliente</p>
+      <p class="sol__rotulo sol__rotulo--poniente">Poniente</p>
+    </div>
+    <div class="sol__final">
+      <figure class="sol__foto">
+        <picture data-foto="atardecer" data-sizes="(max-width: 860px) 92vw, 600px">
+          <source type="image/avif" srcset="assets/fotos/atardecer-480.avif 480w" sizes="(max-width: 860px) 92vw, 600px">
+          <source type="image/webp" srcset="assets/fotos/atardecer-480.webp 480w" sizes="(max-width: 860px) 92vw, 600px">
+          <img src="assets/fotos/atardecer-480.jpg" srcset="assets/fotos/atardecer-480.jpg 480w" sizes="(max-width: 860px) 92vw, 600px" width="480" height="322" alt="El porche al atardecer" decoding="async" loading="lazy">
+        </picture>
+      </figure>
+      <blockquote class="sol__cita">
+        <p>«Un gran porche de ocho arcos apoyados en columnas de granito, orientado al saliente y el poniente, desde donde podrá disfrutar de una magnífica puesta de sol.»</p>
+        <footer>Así lo cuentan en su web</footer>
+      </blockquote>
+    </div>
+  </section>
+  <!-- fin del [MÓDULO SOL] -->
+
+  <div class="rafaga" aria-hidden="true"><svg viewBox="0 0 1600 120"><path pathLength="1" d="M0 58C300 24 560 92 860 60S1320 26 1600 50"/><path pathLength="1" d="M80 90C360 66 620 112 900 84S1380 56 1580 76"/><path pathLength="1" d="M40 34C300 12 560 54 820 30S1280 6 1500 24"/></svg></div>
+
+  <!-- ═══════════════ 5 · la finca (pila sticky) ═══════════════ -->
+  <section class="finca" id="finca" aria-labelledby="finca-titulo">
+    <div class="finca__cabeza">
+      <p class="antetitulo">La finca</p>
+      <h2 id="finca-titulo" data-revelar="palabras">Huerta la Holguerina: ocho hectáreas para pasear.</h2>
+      <p>Así se llama el paraje donde está la casa: encinas y grandes rocas de granito, con sitio de sobra para andar y ver la fauna del lugar.</p>
+    </div>
+    <ol class="pila" id="pila">
+      <li class="pila__item"><article class="tarjeta">
+        <div class="tarjeta__foto"><picture data-foto="granito" data-sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/avif" srcset="assets/fotos/granito-480.avif 480w, assets/fotos/granito-960.avif 960w, assets/fotos/granito-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/webp" srcset="assets/fotos/granito-480.webp 480w, assets/fotos/granito-960.webp 960w, assets/fotos/granito-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <img src="assets/fotos/granito-1200.jpg" srcset="assets/fotos/granito-480.jpg 480w, assets/fotos/granito-960.jpg 960w, assets/fotos/granito-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 46vw" width="1200" height="804" alt="Dehesa de encinas con bolos de granito" decoding="async" loading="lazy">
+</picture></div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">01</span><h3>Encinas y granito</h3><p>Grandes bolos de granito entre las encinas, alrededor de la casa. Es la dehesa de esta tierra, con la hierba verde en invierno y dorada en verano.</p></div>
+      </article></li>
+      <li class="pila__item"><article class="tarjeta">
+        <div class="tarjeta__foto"><picture data-foto="charca-flores" data-sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/avif" srcset="assets/fotos/charca-flores-480.avif 480w, assets/fotos/charca-flores-960.avif 960w, assets/fotos/charca-flores-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/webp" srcset="assets/fotos/charca-flores-480.webp 480w, assets/fotos/charca-flores-960.webp 960w, assets/fotos/charca-flores-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <img src="assets/fotos/charca-flores-1200.jpg" srcset="assets/fotos/charca-flores-480.jpg 480w, assets/fotos/charca-flores-960.jpg 960w, assets/fotos/charca-flores-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 46vw" width="1200" height="804" alt="La charca con flores moradas en primer plano" decoding="async" loading="lazy">
+</picture></div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">02</span><h3>La charca</h3><p>Una charca dentro de la finca, rodeada de encinas. En primavera se llena de flores moradas en la orilla.</p></div>
+      </article></li>
+      <li class="pila__item"><article class="tarjeta">
+        <div class="tarjeta__foto"><picture data-foto="chozo" data-sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/avif" srcset="assets/fotos/chozo-480.avif 480w, assets/fotos/chozo-960.avif 960w, assets/fotos/chozo-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/webp" srcset="assets/fotos/chozo-480.webp 480w, assets/fotos/chozo-960.webp 960w, assets/fotos/chozo-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <img src="assets/fotos/chozo-1200.jpg" srcset="assets/fotos/chozo-480.jpg 480w, assets/fotos/chozo-960.jpg 960w, assets/fotos/chozo-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 46vw" width="1200" height="804" alt="Chozo redondo de piedra con techo de paja" decoding="async" loading="lazy">
+</picture></div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">03</span><h3>El chozo</h3><p>Un chozo redondo de piedra con el techo de paja, como los que se levantaban en la dehesa.</p></div>
+      </article></li>
+      <li class="pila__item"><article class="tarjeta">
+        <div class="tarjeta__foto"><picture data-foto="pilas" data-sizes="(max-width: 860px) 92vw, 600px">
+  <source type="image/avif" srcset="assets/fotos/pilas-480.avif 480w" sizes="(max-width: 860px) 92vw, 600px">
+  <source type="image/webp" srcset="assets/fotos/pilas-480.webp 480w" sizes="(max-width: 860px) 92vw, 600px">
+  <img src="assets/fotos/pilas-480.jpg" srcset="assets/fotos/pilas-480.jpg 480w" sizes="(max-width: 860px) 92vw, 600px" width="480" height="322" alt="Pilas naturales en el granito, con agua de lluvia" decoding="async" loading="lazy">
+</picture></div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">04</span><h3>Las pilas del granito</h3><p>La roca forma pilas naturales que guardan el agua de la lluvia.</p></div>
+      </article></li>
+      <li class="pila__item"><article class="tarjeta">
+        <div class="tarjeta__foto"><picture data-foto="pradera" data-sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/avif" srcset="assets/fotos/pradera-480.avif 480w, assets/fotos/pradera-960.avif 960w, assets/fotos/pradera-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/webp" srcset="assets/fotos/pradera-480.webp 480w, assets/fotos/pradera-960.webp 960w, assets/fotos/pradera-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <img src="assets/fotos/pradera-1200.jpg" srcset="assets/fotos/pradera-480.jpg 480w, assets/fotos/pradera-960.jpg 960w, assets/fotos/pradera-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 46vw" width="1200" height="804" alt="Pradera con flores amarillas y lirios morados" decoding="async" loading="lazy">
+</picture></div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">05</span><h3>La primavera</h3><p>Cuando llega, la pradera se cubre de flores amarillas y lirios morados entre las encinas.</p></div>
+      </article></li>
+      <li class="pila__item"><article class="tarjeta">
+        <div class="tarjeta__foto"><picture data-foto="rocas" data-sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/avif" srcset="assets/fotos/rocas-480.avif 480w, assets/fotos/rocas-960.avif 960w, assets/fotos/rocas-1200.avif 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <source type="image/webp" srcset="assets/fotos/rocas-480.webp 480w, assets/fotos/rocas-960.webp 960w, assets/fotos/rocas-1200.webp 1200w" sizes="(max-width: 860px) 92vw, 46vw">
+  <img src="assets/fotos/rocas-1200.jpg" srcset="assets/fotos/rocas-480.jpg 480w, assets/fotos/rocas-960.jpg 960w, assets/fotos/rocas-1200.jpg 1200w" sizes="(max-width: 860px) 92vw, 46vw" width="1200" height="804" alt="Rocas de granito sobre la pradera" decoding="async" loading="lazy">
+</picture></div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">06</span><h3>La fauna</h3><p>Conejos, abejarucos, rabilargos, mirlos y tórtolas: los que suelen dejarse ver al pasear por la finca.</p></div>
+      </article></li>
+      <li class="pila__item"><article class="tarjeta tarjeta--molino">
+        <div class="tarjeta__foto tarjeta__dibujo">
+          <svg class="molino molino--finca" data-molino="finca" viewBox="89 5 652 669" role="img" aria-label="Dibujo de un molino de viento"><defs><mask id="molino-m-finca" maskUnits="userSpaceOnUse" x="89" y="5" width="652" height="669"><rect x="89" y="5" width="652" height="669" fill="#fff"/><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor molino__rotor--mascara"><path class="molino__hueco" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__hueco" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__hueco" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__hueco" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__hueco" r="19.8"/></g></g></mask></defs><g class="molino__torre" mask="url(#molino-m-finca)"><path pathLength="1" data-tipo="base" d="M140.0 635.0C141.0 636.1 143.1 638.6 144.7 639.9C146.2 641.2 144.0 641.0 147.1 640.9C150.3 640.7 153.7 639.6 159.0 639.2C164.3 638.8 163.1 638.7 171.0 639.0C178.9 639.3 188.9 639.7 195.0 640.6C201.1 641.4 197.2 640.7 198.6 642.7C199.9 644.7 200.0 647.6 201.2 649.7C202.4 651.7 199.3 651.0 204.1 652.0C208.9 653.0 204.1 653.3 223.0 654.0C241.9 654.7 273.3 654.6 290.0 655.0C306.7 655.4 292.4 655.8 299.0 656.0C305.6 656.2 307.7 656.4 320.0 656.0C332.3 655.6 340.3 654.4 355.0 654.0C369.7 653.6 378.0 653.8 387.0 654.0C396.0 654.2 387.2 654.8 396.0 655.0C404.8 655.2 413.6 654.6 427.0 655.0C440.4 655.4 445.6 656.6 457.0 657.0C468.4 657.4 473.2 657.2 479.0 657.0C484.8 656.8 481.2 657.1 483.4 656.1C485.6 655.2 486.0 655.2 489.0 652.7C492.0 650.1 494.9 647.5 497.1 644.7C499.3 641.9 497.9 650.3 499.0 640.0C500.1 629.7 501.3 614.3 502.0 598.0C502.7 581.7 502.2 575.0 502.0 566.0C501.8 557.0 501.2 565.8 501.0 557.0C500.8 548.2 501.2 535.2 501.0 526.0C500.8 516.8 499.6 530.9 500.0 515.0C500.4 499.1 501.7 480.7 502.9 453.7C504.2 426.7 504.8 419.3 505.7 392.3C506.6 365.3 506.7 344.5 507.0 331.0"/><path pathLength="1" data-tipo="linea" d="M200.0 322.0C199.9 322.9 199.3 324.2 199.4 326.0C199.5 327.8 198.4 327.1 200.4 330.0C202.5 332.9 206.5 335.9 208.8 339.0C211.0 342.1 210.2 334.5 210.7 344.0C211.2 353.5 211.4 366.2 211.0 382.0C210.6 397.8 209.4 404.6 209.0 416.0C208.6 427.4 211.0 397.9 209.0 434.0C207.0 470.1 202.2 534.5 200.0 580.0C197.8 625.5 199.2 627.6 199.0 641.0"/><path pathLength="1" data-tipo="linea" d="M503.0 292.0C495.7 286.9 484.8 280.0 470.0 269.0C455.2 258.0 459.6 259.8 435.9 242.2C412.2 224.7 379.5 201.3 362.1 189.2C344.8 177.1 359.8 187.8 357.0 187.1C354.2 186.5 352.0 185.9 349.2 186.2C346.4 186.5 351.1 183.5 344.2 188.6C337.3 193.6 336.3 193.7 317.8 209.2C299.2 224.8 284.3 237.2 259.9 259.2C235.4 281.2 219.1 297.1 206.7 309.1C194.2 321.2 204.5 311.6 203.4 314.0C202.4 316.4 201.9 318.5 201.9 320.0C201.9 321.5 201.0 320.8 203.4 320.7C205.9 320.5 201.4 321.6 213.0 319.4C224.6 317.3 232.7 314.0 256.0 310.8C279.3 307.6 294.8 306.3 319.0 305.0C343.2 303.7 347.3 304.6 366.0 305.0C384.7 305.4 384.0 305.1 404.0 307.0C424.0 308.9 440.9 311.2 457.0 313.7C473.1 316.1 472.6 317.0 477.0 318.0"/><path pathLength="1" data-tipo="linea" d="M252.0 653.0C251.9 639.4 251.7 614.3 251.7 591.0C251.7 567.7 251.8 557.3 252.0 547.0C252.2 536.7 252.2 545.2 252.7 544.1C253.2 543.0 253.4 542.8 254.3 542.1C255.3 541.5 247.8 541.8 257.0 541.1C266.2 540.4 282.4 539.0 296.0 539.0C309.6 539.0 313.0 540.2 319.0 541.3C325.0 542.5 321.8 542.4 323.2 544.1C324.7 545.8 324.9 536.3 325.6 549.0C326.2 561.7 325.7 588.4 326.0 602.0C326.3 615.6 326.8 602.2 327.0 611.0C327.2 619.8 327.2 632.3 327.0 642.0C326.8 651.7 326.2 652.1 326.0 655.0"/><path pathLength="1" data-tipo="hueco" d="M291.6 330.8C291.2 331.3 290.4 330.8 290.0 333.0C289.6 335.2 289.4 336.6 290.0 341.0C290.6 345.4 290.2 349.7 292.6 352.8C295.0 355.9 297.4 354.6 301.0 355.0C304.6 355.4 306.8 355.1 309.0 354.8C311.2 354.5 310.1 354.6 310.8 353.8C311.5 353.0 311.7 354.0 312.0 351.0C312.3 348.0 312.4 344.0 312.0 340.0C311.6 336.0 311.1 334.9 310.2 333.0C309.3 331.1 309.6 331.9 308.0 331.2C306.4 330.5 306.4 330.2 303.0 330.0C299.6 329.8 295.1 330.2 292.6 330.4C290.1 330.6 291.8 330.7 291.6 330.8Z"/><path pathLength="1" data-tipo="hueco" d="M379.2 331.6C381.4 331.5 385.4 330.8 389.0 331.0C392.6 331.2 393.9 327.5 395.4 332.6C396.9 337.7 398.3 349.5 395.6 354.4C392.9 359.3 386.5 355.2 383.0 355.0C379.5 354.8 380.9 356.0 379.8 353.4C378.7 350.8 378.3 347.7 378.0 343.0C377.7 338.3 378.3 334.7 378.6 332.2C378.9 329.7 379.1 331.7 379.2 331.6Z"/><path pathLength="1" data-tipo="hueco" d="M452.6 333.2C452.2 333.8 451.2 331.2 451.0 336.0C450.8 340.8 450.1 350.2 451.6 354.8C453.1 359.4 454.0 356.6 458.0 357.0C462.0 357.4 466.7 357.7 469.6 356.4C472.5 355.1 471.3 355.4 471.0 351.0C470.7 346.6 471.0 340.4 468.4 336.4C465.8 332.4 462.3 333.4 459.0 332.6C455.7 331.8 455.0 332.5 453.6 332.6C452.2 332.7 452.8 333.1 452.6 333.2Z"/><path pathLength="1" data-tipo="hueco" d="M234.4 335.6C233.7 335.9 232.2 336.1 231.2 336.8C230.2 337.5 230.1 335.2 230.0 339.0C229.9 342.8 229.9 349.5 230.6 354.0C231.3 358.5 230.7 358.1 233.2 359.4C235.7 360.7 238.6 360.4 242.0 360.0C245.4 359.6 247.1 362.8 248.6 357.6C250.1 352.4 249.2 341.2 248.8 336.2C248.4 331.2 249.9 335.2 247.0 335.0C244.1 334.8 238.4 335.3 235.6 335.4C232.8 335.5 234.7 335.6 234.4 335.6Z"/><path pathLength="1" data-tipo="hueco" d="M272.4 396.6C271.2 396.8 268.6 396.6 267.0 397.6C265.4 398.6 265.7 395.9 265.0 401.0C264.3 406.1 264.0 415.5 264.0 421.0C264.0 426.5 264.7 421.2 265.0 426.0C265.3 430.8 264.9 438.9 265.2 443.0C265.5 447.1 265.4 444.1 266.2 444.8C267.0 445.5 264.2 445.7 269.0 446.0C273.8 446.3 283.0 446.3 288.0 446.0C293.0 445.7 290.5 446.1 291.8 444.6C293.1 443.1 293.3 443.1 294.0 439.0C294.7 434.9 295.3 434.6 295.0 426.0C294.7 417.4 293.7 406.2 292.8 400.0C291.9 393.8 292.3 398.7 291.0 398.0C289.7 397.3 290.8 397.4 287.0 397.0C283.2 396.6 276.8 396.5 273.6 396.4C270.4 396.3 272.7 396.6 272.4 396.6Z"/><path pathLength="1" data-tipo="hierba" d="M109.0 653.0C109.7 652.8 110.2 652.2 112.0 652.0C113.8 651.8 112.6 651.6 117.0 652.0C121.4 652.4 128.3 654.0 132.0 654.0C135.7 654.0 133.4 653.3 134.0 652.0C134.6 650.7 134.0 649.3 134.7 648.0C135.3 646.7 136.5 646.4 137.0 646.0"/><path pathLength="1" data-tipo="hierba" d="M140.0 648.0C141.8 649.3 146.2 652.7 148.0 654.0"/><path pathLength="1" data-tipo="hierba" d="M160.0 653.0C159.8 652.6 160.4 652.5 159.0 651.0C157.6 649.5 155.4 648.5 153.7 646.3C151.9 644.1 151.6 642.2 151.0 641.0"/><path pathLength="1" data-tipo="hierba" d="M152.0 630.0C153.0 631.1 155.2 633.0 156.3 635.0C157.4 637.0 156.9 638.1 157.0 639.0"/><path pathLength="1" data-tipo="hierba" d="M170.0 648.0C169.1 646.2 166.9 641.8 166.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M186.0 654.0C184.6 652.0 181.4 648.1 179.7 645.0C177.9 641.9 178.4 641.1 178.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M643.0 665.0C641.9 664.7 643.3 664.3 638.0 663.7C632.7 663.0 632.9 662.4 619.0 662.0C605.1 661.6 586.2 662.5 575.0 661.8C563.8 661.0 572.6 661.7 567.9 658.7C563.2 655.6 557.7 650.8 553.8 648.0C549.8 645.2 551.7 646.5 550.0 646.1C548.3 645.7 548.2 644.9 546.2 646.3C544.2 647.8 542.7 651.2 540.9 652.6C539.0 653.9 539.4 653.2 537.8 652.6C536.2 651.9 535.8 651.5 533.7 649.4C531.5 647.3 530.2 644.9 528.1 643.0C526.1 641.1 525.5 641.4 524.3 641.0C523.2 640.6 523.5 640.8 522.9 641.1C522.3 641.5 522.3 639.4 521.6 642.6C520.8 645.7 520.4 652.4 519.7 655.6C519.0 658.7 519.1 656.6 518.3 656.9C517.5 657.2 517.8 657.4 516.0 656.9C514.2 656.4 514.1 657.5 510.3 654.7C506.6 651.8 501.5 646.3 499.0 644.0"/></g><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor"><path class="molino__pala" pathLength="1" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__pala" pathLength="1" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__pala" pathLength="1" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__pala" pathLength="1" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__cubo" pathLength="1" r="19.8"/></g></g></svg>
+        </div>
+        <div class="tarjeta__texto"><span class="tarjeta__num">07</span><h3>Y el molino</h3>
+          <blockquote class="tarjeta__cita"><p>«Los más viejos del lugar dicen que ni sus abuelos lo vieron funcionar.»</p></blockquote>
+          <p>En la finca hay un molino de viento, se cree que del siglo XV, que da nombre a la casa. Hoy se usa como almacén, y desde allí se ven unas vistas panorámicas de la dehesa.</p></div>
+      </article></li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════ 6 · lo que hay ═══════════════ -->
+  <section class="hay" id="lo-que-hay" aria-labelledby="hay-titulo">
+    <div class="hay__cabeza">
+      <p class="antetitulo">Lo que hay</p>
+      <h2 id="hay-titulo" data-revelar="palabras">Llegáis y está todo.</h2>
+      <p>Lo que cuentan su web y su ficha. Si echáis algo en falta, preguntad al reservar.</p>
+    </div>
+    <div class="hay__grupos">
+      <div class="hay__grupo">
+        <h3>En la cocina</h3>
+        <ul class="inventario">
+          <li>Vajilla y cristalería</li>
+          <li>Vitrocerámica y microondas</li>
+          <li>Lavavajillas y frigorífico</li>
+          <li>Tostador y cafetera</li>
+          <li>Exprimidor eléctrico y batidora</li>
+          <li>Lavadora y plancha</li>
+        </ul>
+      </div>
+      <div class="hay__grupo">
+        <h3>En la casa</h3>
+        <ul class="inventario">
+          <li>Toda la casa climatizada</li>
+          <li data-fuente="tcr">Calefacción</li>
+          <li>Salón comedor con chimenea</li>
+          <li data-fuente="tcr">Televisión</li>
+          <li data-fuente="tcr">Juegos de mesa</li>
+        </ul>
+      </div>
+      <div class="hay__grupo">
+        <h3>Fuera</h3>
+        <ul class="inventario">
+          <li>Porche de ocho arcos</li>
+          <li>Barbacoa con mesa de piedra</li>
+          <li>Una finca de 8 ha para pasear</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="rafaga" aria-hidden="true"><svg viewBox="0 0 1600 120"><path pathLength="1" d="M0 64C280 32 560 98 840 62S1320 22 1600 52"/><path pathLength="1" d="M100 94C360 72 620 110 880 88S1360 58 1570 80"/><path pathLength="1" d="M30 36C300 14 570 58 830 34S1290 8 1510 28"/></svg></div>
+
+  <!-- [MÓDULO ALREDEDORES] 7 · alrededores: se quita con node scripts/quitar-alrededores.mjs -->
+  <section class="alrededores" id="alrededores" data-modulo="alrededores" aria-labelledby="alrededores-titulo">
+    <div class="alrededores__texto">
+      <p class="antetitulo">Alrededores</p>
+      <h2 id="alrededores-titulo" data-revelar="palabras">Entre la sierra de San Pedro y las vegas del Guadiana.</h2>
+      <p>La Roca de la Sierra extiende su caserío en un llano rodeado de sierrillas bajas, justo donde la sierra de San Pedro da paso a las vegas del Guadiana.</p>
+      <ul class="alrededores__planes">
+        <li>Senderismo y rutas en bici de montaña.</li>
+        <li>El circuito de descenso en bici de montaña: <a href="https://www.mtblaroca.com" rel="noopener" target="_blank">mtblaroca.com</a>.</li>
+        <li>Tiradas al plato.</li>
+        <li>Un día de campo en la Dehesa Boyal.</li>
+        <li>Según la comarca (Tierra de Mérida – Vegas Bajas), hay dólmenes cerca, como la Cueva del Monje y la Cueva del Moro.</li>
+      </ul>
+    </div>
+    <figure class="rosa">
+      <svg viewBox="0 0 520 520" role="img" aria-labelledby="rosa-titulo">
+        <title id="rosa-titulo">Rosa de los vientos con la casa en el centro y las ciudades cercanas, con la distancia en coche</title>
+        <g class="rosa__guia">
+          <circle cx="260" cy="260" r="80"/><circle cx="260" cy="260" r="160"/><circle cx="260" cy="260" r="230"/>
+          <path d="M260 20V500M20 260H500"/>
+        </g>
+        <g class="rosa__puntas">
+          <path d="M260 6L270 250L260 260L250 250Z"/><path d="M514 260L270 270L260 260L270 250Z"/><path d="M260 514L250 270L260 260L270 270Z"/><path d="M6 260L250 250L260 260L250 270Z"/>
+        </g>
+        <text class="rosa__norte" x="260" y="-6" text-anchor="middle">N</text>
+        <g class="rosa__rutas" id="rosa-rutas">
+          <path d="M260 260L369 92"/>
+          <path d="M260 260L378 349"/>
+          <path d="M260 260L154 366"/>
+          <path d="M260 260L281 352"/>
+        </g>
+        <g class="rosa__ciudades">
+          <circle cx="369" cy="92" r="6"/><text x="382" y="86">Cáceres</text><text class="rosa__km" x="382" y="106">54 km · 52 min</text>
+          <circle cx="378" cy="349" r="6"/><text x="390" y="372">Mérida</text><text class="rosa__km" x="390" y="392">50 km · 57 min</text>
+          <circle cx="154" cy="366" r="6"/><text x="142" y="392" text-anchor="end">Badajoz</text><text class="rosa__km" x="142" y="412" text-anchor="end">41 km · 43 min</text>
+          <circle cx="281" cy="352" r="5"/><text x="270" y="384" text-anchor="end">Montijo</text><text class="rosa__km" x="270" y="404" text-anchor="end">26 km · 32 min</text>
+        </g>
+        <circle class="rosa__casa" cx="260" cy="260" r="9"/>
+      </svg>
+      <figcaption>Por carretera, medido con OpenStreetMap. Las líneas marcan la dirección; la distancia es la del camino.</figcaption>
+    </figure>
+  </section>
+  <!-- fin del [MÓDULO ALREDEDORES] -->
+
+  <!-- ═══════════════ 8 · opiniones ═══════════════ -->
+  <section class="opiniones" id="opiniones" aria-labelledby="opiniones-titulo">
+    <div class="opiniones__cabeza">
+      <p class="antetitulo">Opiniones</p>
+      <h2 id="opiniones-titulo" class="visualmente-oculto">Lo que dicen quienes han estado</h2>
+      <div class="notas">
+        <p class="nota-grande"><b data-contar="4.5" data-decimales="1">4,5</b><span>★ en Google, con 20 reseñas</span></p>
+        <p class="nota-grande"><b data-contar="10">10</b><span>«Excepcional» en TusCasasRurales</span></p>
+      </div>
+      <a class="enlace" href="https://www.tuscasasrurales.com/alojamiento-rural-molino-de-viento-f11202.htm" rel="noopener" target="_blank">Leer las opiniones en TusCasasRurales</a>
+    </div>
+    <div class="citas" id="citas">
+      <ul class="citas__pista" id="citas-pista">
+        <li><blockquote>«La casa es espectacular, completa, muy cómoda y la decoración con buen gusto, con chimenea y aire acondicionado en todas las habitaciones y salón. El entorno espectacular rodeado de naturaleza.»</blockquote><span>Opinión en TusCasasRurales</span></li>
+        <li><blockquote>«Un lugar precioso para desconectar.»</blockquote><span>En Google</span></li>
+        <li><blockquote>«Casa rústica muy bien equipada, los dormitorios muy cómodos, todo muy limpio, una gran chimenea, menaje muy completo, los exteriores con barbacoa y porche, el entorno es de cine y los anfitriones de diez […] repetiremos.»</blockquote><span>Opinión en TusCasasRurales</span></li>
+        <li><blockquote>«Buen lugar de vacaciones.»</blockquote><span>En Google</span></li>
+      </ul>
+    </div>
+    <!-- ═══ [MANDO DE MAQUETA] puntuaciones por categoría: solo en la versión sobria ═══ -->
+    <table class="puntuaciones" id="puntuaciones">
+      <caption>Puntuación por categoría en TusCasasRurales</caption>
+      <tbody>
+        <tr><th scope="row">Limpieza</th><td>10</td></tr>
+        <tr><th scope="row">Calidad-precio</th><td>10</td></tr>
+        <tr><th scope="row">Confort</th><td>10</td></tr>
+        <tr><th scope="row">Propietario</th><td>10</td></tr>
+        <tr><th scope="row">Instalaciones</th><td>10</td></tr>
+        <tr><th scope="row">Ubicación</th><td>10</td></tr>
+      </tbody>
+    </table>
+    <!-- fin del bloque [MANDO DE MAQUETA] ═══ -->
+  </section>
+
+  <!-- ═══════════════ 9 · tarifas y condiciones ═══════════════ -->
+  <section class="tarifas" id="tarifas" aria-labelledby="tarifas-titulo">
+    <div class="tarifas__cabeza">
+      <p class="antetitulo">Tarifas y condiciones</p>
+      <h2 id="tarifas-titulo" data-revelar="palabras">Toda la casa, pagando por persona.</h2>
+      <div class="precio" id="precio" hidden>
+        <p class="precio__cifra"><b id="precio-importe"></b><span id="precio-texto"></span></p>
+        <p class="precio__minimo" id="precio-minimo"></p>
+      </div>
+    </div>
+    <dl class="normas">
+      <div><dt>La casa, entera</dt><dd>Se alquila completa, pero se paga según las personas que os alojáis. Por eso, en ella solo se quedan las personas contratadas.</dd></div>
+      <div><dt>Mínimo, dos noches</dt><dd>Es la estancia más corta que se puede reservar.</dd></div>
+      <div><dt>La barbacoa</dt><dd>Su uso depende de lo que marque la normativa vigente en cada momento.</dd></div>
+      <div><dt>Si algo falla</dt><dd>Contadlo durante la estancia, en cuanto lo veáis: así se puede arreglar mientras estáis. Después del día de salida ya no se atienden reclamaciones.</dd></div>
+      <div><dt>Si os dejáis algo</dt><dd>Llamad y os lo envían a casa, contra reembolso.</dd></div>
+    </dl>
+    <p class="tarifas__pdf"><a class="enlace" href="assets/condiciones-de-uso.pdf" target="_blank" rel="noopener">Condiciones de uso completas (PDF)</a></p>
+  </section>
+
+  <!-- ═══════════════ 10 · consultar fechas ═══════════════ -->
+  <section class="fechas" id="fechas" aria-labelledby="fechas-titulo">
+    <div class="fechas__cabeza">
+      <p class="antetitulo">Consultar fechas</p>
+      <h2 id="fechas-titulo" data-revelar="palabras">Decidnos cuándo y cuántos.</h2>
+      <p>Rellenad lo básico y os preparamos el mensaje para llamar, mandar un SMS o un correo. Nada se envía desde esta página.</p>
+      <div class="fechas__extra">
+        <a class="boton boton--claro" href="https://maps.app.goo.gl/6bmRTehoVCNKgMgTA" rel="noopener" target="_blank">Paseo virtual</a>
+        <a class="fechas__tcr" href="https://www.tuscasasrurales.com/alojamiento-rural-molino-de-viento-f11202.htm" rel="noopener" target="_blank">Su ficha en TusCasasRurales</a>
+      </div>
+    </div>
+    <form class="reserva" id="reserva" novalidate>
+      <div class="campo"><label for="llegada">Llegada</label><input id="llegada" name="llegada" type="date" required aria-describedby="fechas-error"></div>
+      <div class="campo"><label for="salida">Salida</label><input id="salida" name="salida" type="date" required aria-describedby="fechas-error"></div>
+      <p class="error" id="fechas-error" aria-live="polite"></p>
+      <div class="campo"><label for="personas">Personas</label><input id="personas" name="personas" type="number" min="1" max="8" value="2" inputmode="numeric" aria-describedby="plazas-aviso"></div>
+      <div class="campo"><label for="telefono">Teléfono <small>(opcional)</small></label><input id="telefono" name="telefono" type="tel" autocomplete="tel"></div>
+      <p class="aviso" id="plazas-aviso" aria-live="polite"></p>
+      <div class="campo campo--ancho"><label for="nombre">Vuestro nombre</label><input id="nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="reserva-error"></div>
+      <div class="campo campo--ancho"><label for="mensaje">Algo más <small>(opcional)</small></label><textarea id="mensaje" name="mensaje" rows="3"></textarea></div>
+      <p class="error" id="reserva-error" aria-live="polite"></p>
+      <button class="boton boton--lima iman" type="submit">Preparar el mensaje</button>
+    </form>
+    <div class="listo" id="reserva-listo" hidden>
+      <p class="listo__titulo">Vuestro mensaje</p>
+      <pre class="listo__texto" id="reserva-texto"></pre>
+      <div class="listo__acciones">
+        <a class="boton boton--lima" href="tel:+34676516272">Llamar · 676 516 272</a>
+        <a class="boton boton--claro" id="reserva-sms" href="sms:+34676516272">Enviar por SMS</a>
+        <a class="boton boton--claro" id="reserva-email" href="mailto:info@ar-molinodeviento.com">Enviar por correo</a>
+        <button class="boton boton--claro" type="button" id="reserva-copiar">Copiar mensaje</button>
+        <button class="boton boton--claro es-apagado" type="button" id="reserva-whatsapp" disabled>WhatsApp</button>
+      </div>
+      <p class="listo__nota" id="whatsapp-nota">WhatsApp, en cuanto la casa lo confirme. Fijo: <a href="tel:+34924406375">924 406 375</a>.</p>
+      <p class="listo__estado" id="reserva-estado" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 11 · cómo llegar ═══════════════ -->
+  <section class="llegar" id="llegar" aria-labelledby="llegar-titulo">
+    <div class="llegar__tarjeta">
+      <p class="antetitulo">Cómo llegar</p>
+      <h2 id="llegar-titulo">A 700 m de La Roca de la Sierra</h2>
+      <address>
+        <p>C. Vasco Núñez de Balboa, 2<br>06190 La Roca de la Sierra (Badajoz)</p>
+        <p><a href="tel:+34924406375">924 406 375</a> · fijo<br><a href="tel:+34676516272">676 516 272</a> · móvil</p>
+        <p><a href="mailto:info@ar-molinodeviento.com">info@ar-molinodeviento.com</a></p>
+      </address>
+    </div>
+    <div class="llegar__rutas">
+      <ol class="rutas">
+        <li><b>Por la EX-100</b><span>A la altura de La Roca de la Sierra, tomad el desvío de La Nava de Santiago.</span></li>
+        <li><b>Por la A-5</b><span>Salid en Montijo / Puebla de la Calzada y seguid hacia La Roca de la Sierra. Ya en el pueblo, tomad dirección La Nava de Santiago.</span></li>
+      </ol>
+      <div class="mapa-consent" id="mapa-consentimiento">
+        <p>El mapa es de Google y, al abrirlo, Google puede usar cookies.</p>
+        <button class="boton boton--oscuro" type="button" id="mapa-boton">Ver el mapa</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <svg class="molino molino--pie" data-molino="pie" viewBox="89 5 652 669" aria-hidden="true"><defs><mask id="molino-m-pie" maskUnits="userSpaceOnUse" x="89" y="5" width="652" height="669"><rect x="89" y="5" width="652" height="669" fill="#fff"/><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor molino__rotor--mascara"><path class="molino__hueco" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__hueco" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__hueco" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__hueco" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__hueco" r="19.8"/></g></g></mask></defs><g class="molino__torre" mask="url(#molino-m-pie)"><path pathLength="1" data-tipo="base" d="M140.0 635.0C141.0 636.1 143.1 638.6 144.7 639.9C146.2 641.2 144.0 641.0 147.1 640.9C150.3 640.7 153.7 639.6 159.0 639.2C164.3 638.8 163.1 638.7 171.0 639.0C178.9 639.3 188.9 639.7 195.0 640.6C201.1 641.4 197.2 640.7 198.6 642.7C199.9 644.7 200.0 647.6 201.2 649.7C202.4 651.7 199.3 651.0 204.1 652.0C208.9 653.0 204.1 653.3 223.0 654.0C241.9 654.7 273.3 654.6 290.0 655.0C306.7 655.4 292.4 655.8 299.0 656.0C305.6 656.2 307.7 656.4 320.0 656.0C332.3 655.6 340.3 654.4 355.0 654.0C369.7 653.6 378.0 653.8 387.0 654.0C396.0 654.2 387.2 654.8 396.0 655.0C404.8 655.2 413.6 654.6 427.0 655.0C440.4 655.4 445.6 656.6 457.0 657.0C468.4 657.4 473.2 657.2 479.0 657.0C484.8 656.8 481.2 657.1 483.4 656.1C485.6 655.2 486.0 655.2 489.0 652.7C492.0 650.1 494.9 647.5 497.1 644.7C499.3 641.9 497.9 650.3 499.0 640.0C500.1 629.7 501.3 614.3 502.0 598.0C502.7 581.7 502.2 575.0 502.0 566.0C501.8 557.0 501.2 565.8 501.0 557.0C500.8 548.2 501.2 535.2 501.0 526.0C500.8 516.8 499.6 530.9 500.0 515.0C500.4 499.1 501.7 480.7 502.9 453.7C504.2 426.7 504.8 419.3 505.7 392.3C506.6 365.3 506.7 344.5 507.0 331.0"/><path pathLength="1" data-tipo="linea" d="M200.0 322.0C199.9 322.9 199.3 324.2 199.4 326.0C199.5 327.8 198.4 327.1 200.4 330.0C202.5 332.9 206.5 335.9 208.8 339.0C211.0 342.1 210.2 334.5 210.7 344.0C211.2 353.5 211.4 366.2 211.0 382.0C210.6 397.8 209.4 404.6 209.0 416.0C208.6 427.4 211.0 397.9 209.0 434.0C207.0 470.1 202.2 534.5 200.0 580.0C197.8 625.5 199.2 627.6 199.0 641.0"/><path pathLength="1" data-tipo="linea" d="M503.0 292.0C495.7 286.9 484.8 280.0 470.0 269.0C455.2 258.0 459.6 259.8 435.9 242.2C412.2 224.7 379.5 201.3 362.1 189.2C344.8 177.1 359.8 187.8 357.0 187.1C354.2 186.5 352.0 185.9 349.2 186.2C346.4 186.5 351.1 183.5 344.2 188.6C337.3 193.6 336.3 193.7 317.8 209.2C299.2 224.8 284.3 237.2 259.9 259.2C235.4 281.2 219.1 297.1 206.7 309.1C194.2 321.2 204.5 311.6 203.4 314.0C202.4 316.4 201.9 318.5 201.9 320.0C201.9 321.5 201.0 320.8 203.4 320.7C205.9 320.5 201.4 321.6 213.0 319.4C224.6 317.3 232.7 314.0 256.0 310.8C279.3 307.6 294.8 306.3 319.0 305.0C343.2 303.7 347.3 304.6 366.0 305.0C384.7 305.4 384.0 305.1 404.0 307.0C424.0 308.9 440.9 311.2 457.0 313.7C473.1 316.1 472.6 317.0 477.0 318.0"/><path pathLength="1" data-tipo="linea" d="M252.0 653.0C251.9 639.4 251.7 614.3 251.7 591.0C251.7 567.7 251.8 557.3 252.0 547.0C252.2 536.7 252.2 545.2 252.7 544.1C253.2 543.0 253.4 542.8 254.3 542.1C255.3 541.5 247.8 541.8 257.0 541.1C266.2 540.4 282.4 539.0 296.0 539.0C309.6 539.0 313.0 540.2 319.0 541.3C325.0 542.5 321.8 542.4 323.2 544.1C324.7 545.8 324.9 536.3 325.6 549.0C326.2 561.7 325.7 588.4 326.0 602.0C326.3 615.6 326.8 602.2 327.0 611.0C327.2 619.8 327.2 632.3 327.0 642.0C326.8 651.7 326.2 652.1 326.0 655.0"/><path pathLength="1" data-tipo="hueco" d="M291.6 330.8C291.2 331.3 290.4 330.8 290.0 333.0C289.6 335.2 289.4 336.6 290.0 341.0C290.6 345.4 290.2 349.7 292.6 352.8C295.0 355.9 297.4 354.6 301.0 355.0C304.6 355.4 306.8 355.1 309.0 354.8C311.2 354.5 310.1 354.6 310.8 353.8C311.5 353.0 311.7 354.0 312.0 351.0C312.3 348.0 312.4 344.0 312.0 340.0C311.6 336.0 311.1 334.9 310.2 333.0C309.3 331.1 309.6 331.9 308.0 331.2C306.4 330.5 306.4 330.2 303.0 330.0C299.6 329.8 295.1 330.2 292.6 330.4C290.1 330.6 291.8 330.7 291.6 330.8Z"/><path pathLength="1" data-tipo="hueco" d="M379.2 331.6C381.4 331.5 385.4 330.8 389.0 331.0C392.6 331.2 393.9 327.5 395.4 332.6C396.9 337.7 398.3 349.5 395.6 354.4C392.9 359.3 386.5 355.2 383.0 355.0C379.5 354.8 380.9 356.0 379.8 353.4C378.7 350.8 378.3 347.7 378.0 343.0C377.7 338.3 378.3 334.7 378.6 332.2C378.9 329.7 379.1 331.7 379.2 331.6Z"/><path pathLength="1" data-tipo="hueco" d="M452.6 333.2C452.2 333.8 451.2 331.2 451.0 336.0C450.8 340.8 450.1 350.2 451.6 354.8C453.1 359.4 454.0 356.6 458.0 357.0C462.0 357.4 466.7 357.7 469.6 356.4C472.5 355.1 471.3 355.4 471.0 351.0C470.7 346.6 471.0 340.4 468.4 336.4C465.8 332.4 462.3 333.4 459.0 332.6C455.7 331.8 455.0 332.5 453.6 332.6C452.2 332.7 452.8 333.1 452.6 333.2Z"/><path pathLength="1" data-tipo="hueco" d="M234.4 335.6C233.7 335.9 232.2 336.1 231.2 336.8C230.2 337.5 230.1 335.2 230.0 339.0C229.9 342.8 229.9 349.5 230.6 354.0C231.3 358.5 230.7 358.1 233.2 359.4C235.7 360.7 238.6 360.4 242.0 360.0C245.4 359.6 247.1 362.8 248.6 357.6C250.1 352.4 249.2 341.2 248.8 336.2C248.4 331.2 249.9 335.2 247.0 335.0C244.1 334.8 238.4 335.3 235.6 335.4C232.8 335.5 234.7 335.6 234.4 335.6Z"/><path pathLength="1" data-tipo="hueco" d="M272.4 396.6C271.2 396.8 268.6 396.6 267.0 397.6C265.4 398.6 265.7 395.9 265.0 401.0C264.3 406.1 264.0 415.5 264.0 421.0C264.0 426.5 264.7 421.2 265.0 426.0C265.3 430.8 264.9 438.9 265.2 443.0C265.5 447.1 265.4 444.1 266.2 444.8C267.0 445.5 264.2 445.7 269.0 446.0C273.8 446.3 283.0 446.3 288.0 446.0C293.0 445.7 290.5 446.1 291.8 444.6C293.1 443.1 293.3 443.1 294.0 439.0C294.7 434.9 295.3 434.6 295.0 426.0C294.7 417.4 293.7 406.2 292.8 400.0C291.9 393.8 292.3 398.7 291.0 398.0C289.7 397.3 290.8 397.4 287.0 397.0C283.2 396.6 276.8 396.5 273.6 396.4C270.4 396.3 272.7 396.6 272.4 396.6Z"/><path pathLength="1" data-tipo="hierba" d="M109.0 653.0C109.7 652.8 110.2 652.2 112.0 652.0C113.8 651.8 112.6 651.6 117.0 652.0C121.4 652.4 128.3 654.0 132.0 654.0C135.7 654.0 133.4 653.3 134.0 652.0C134.6 650.7 134.0 649.3 134.7 648.0C135.3 646.7 136.5 646.4 137.0 646.0"/><path pathLength="1" data-tipo="hierba" d="M140.0 648.0C141.8 649.3 146.2 652.7 148.0 654.0"/><path pathLength="1" data-tipo="hierba" d="M160.0 653.0C159.8 652.6 160.4 652.5 159.0 651.0C157.6 649.5 155.4 648.5 153.7 646.3C151.9 644.1 151.6 642.2 151.0 641.0"/><path pathLength="1" data-tipo="hierba" d="M152.0 630.0C153.0 631.1 155.2 633.0 156.3 635.0C157.4 637.0 156.9 638.1 157.0 639.0"/><path pathLength="1" data-tipo="hierba" d="M170.0 648.0C169.1 646.2 166.9 641.8 166.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M186.0 654.0C184.6 652.0 181.4 648.1 179.7 645.0C177.9 641.9 178.4 641.1 178.0 640.0"/><path pathLength="1" data-tipo="hierba" d="M643.0 665.0C641.9 664.7 643.3 664.3 638.0 663.7C632.7 663.0 632.9 662.4 619.0 662.0C605.1 661.6 586.2 662.5 575.0 661.8C563.8 661.0 572.6 661.7 567.9 658.7C563.2 655.6 557.7 650.8 553.8 648.0C549.8 645.2 551.7 646.5 550.0 646.1C548.3 645.7 548.2 644.9 546.2 646.3C544.2 647.8 542.7 651.2 540.9 652.6C539.0 653.9 539.4 653.2 537.8 652.6C536.2 651.9 535.8 651.5 533.7 649.4C531.5 647.3 530.2 644.9 528.1 643.0C526.1 641.1 525.5 641.4 524.3 641.0C523.2 640.6 523.5 640.8 522.9 641.1C522.3 641.5 522.3 639.4 521.6 642.6C520.8 645.7 520.4 652.4 519.7 655.6C519.0 658.7 519.1 656.6 518.3 656.9C517.5 657.2 517.8 657.4 516.0 656.9C514.2 656.4 514.1 657.5 510.3 654.7C506.6 651.8 501.5 646.3 499.0 644.0"/></g><g transform="matrix(0.86198 -0.01894 0.06776 1.15863 524 306.75)"><g class="molino__rotor"><path class="molino__pala" pathLength="1" d="M-18.9 -9.1L-53.5 -32.1L-199.2 -143.2L-145.7 -196.7L-32.9 -52.7L-9.4 -18.6Z"/><path class="molino__pala" pathLength="1" d="M9.1 -18.9L32.1 -53.5L143.2 -199.2L196.7 -145.7L52.7 -32.9L18.6 -9.4Z"/><path class="molino__pala" pathLength="1" d="M18.9 9.1L53.5 32.1L199.2 143.2L145.7 196.7L32.9 52.7L9.4 18.6Z"/><path class="molino__pala" pathLength="1" d="M-9.1 18.9L-32.1 53.5L-143.2 199.2L-196.7 145.7L-52.7 32.9L-18.6 9.4Z"/><circle class="molino__cubo" pathLength="1" r="19.8"/></g></g></svg>
+  <div class="pie__datos">
+    <p class="pie__nombre">A.R. Molino de Viento</p>
+    <p>Alojamiento rural · La Roca de la Sierra (Badajoz) · registro <b>AT-BA-00023</b></p>
+  </div>
+  <nav aria-label="Legal">
+    <a href="aviso-legal.html">Aviso legal</a>
+    <a href="privacidad.html">Privacidad y cookies</a>
+    <button type="button" id="cookies-reabrir">Aviso de cookies</button>
+  </nav>
+  <p class="pie__anio">© <span id="anio">2026</span></p>
+</footer>
+
+<div class="cookies" id="cookies" role="region" aria-label="Aviso de cookies" hidden>
+  <p class="cookies__texto">Esta web no usa cookies de seguimiento. Solo recuerda en vuestro navegador que habéis visto este aviso. El mapa de Google se carga únicamente si lo pedís. <a href="privacidad.html">Más información</a>.</p>
+  <button class="boton boton--lima" type="button" id="cookies-aceptar">Entendido</button>
+</div>
+
+<!-- fotos de un arco -->
+<dialog class="galeria" id="galeria" aria-labelledby="galeria-titulo">
+  <div class="galeria__cabeza">
+    <h2 id="galeria-titulo">Rincón</h2>
+    <p id="galeria-texto"></p>
+    <button class="galeria__cerrar" type="button" id="galeria-cerrar">Cerrar<span class="visualmente-oculto"> las fotos</span></button>
+  </div>
+  <figure class="galeria__foto" id="galeria-foto"></figure>
+  <div class="galeria__pie">
+    <button type="button" id="galeria-antes" aria-label="Foto anterior">←</button>
+    <span id="galeria-cuenta" aria-live="polite"></span>
+    <button type="button" id="galeria-despues" aria-label="Foto siguiente">→</button>
+  </div>
+</dialog>
+
+<!-- ═══ [MANDO DE MAQUETA] SOLO REVISIÓN INTERNA · NO PUBLICAR · lo quita scripts/quitar-mando.mjs ═══ -->
+<div class="mando" id="mando" role="group" aria-label="Versión de la web" hidden>
+  <p class="mando__titulo">Versión</p>
+  <div class="mando__botones">
+    <button type="button" data-densidad="aspas" aria-pressed="true">Aspas</button>
+    <button type="button" data-densidad="sobria" aria-pressed="false">Sobria</button>
+  </div>
+  <p class="mando__pie">Dos versiones de la misma web. Lo marcado «solo TCR» sale solo en TusCasasRurales.</p>
+  <p class="mando__aviso">Plazas por confirmar: 8 en TusCasasRurales, 8-10 en su web.</p>
+  <p class="mando__aviso">Precio por confirmar: 33 € por persona y noche (su web y la ficha de 2026).</p>
+  <details class="mando__dudas">
+    <summary>Dudas para el dueño (10)</summary>
+    <ol>
+      <li>Plazas: 8 (TusCasasRurales, cuadra con 4 dobles) o 8-10 (su web).</li>
+      <li>Animales: TusCasasRurales dice que sí y su PDF de condiciones, que no. La web no dice nada.</li>
+      <li>Dirección: «Vasco Núñez de Balboa, 2» (Google) o «Prolongación Vasco Núñez, 2» (su web).</li>
+      <li>Distancias: su web y la ficha no casan; aquí van las medidas con OpenStreetMap.</li>
+      <li>¿Sigue vigente el precio de 33 € por persona y noche?</li>
+      <li>¿La torre de piedra de la foto de la fachada es el molino? ¿Se puede visitar o subir?</li>
+      <li>¿Tienen relación con la pastelería «La Era»? Su web la enlaza.</li>
+      <li>El Facebook que enlaza su web parece personal: no se ha usado.</li>
+      <li>Huerto ecológico, juegos y aparcamiento solo salen en TusCasasRurales.</li>
+      <li>Las fotos tienen años (una tele de tubo en el salón): ¿hay actuales?</li>
+    </ol>
+  </details>
+</div>
+<!-- fin del bloque [MANDO DE MAQUETA] ═══ -->
+
+<script type="application/json" id="datos-fotos">[{"id":"dehesa-casa","grupo":"finca","panel":null,"alt":"La casa de piedra en la dehesa, con la luz baja de la tarde","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"fachada","grupo":"casa","panel":"porche","alt":"La casa de piedra con su porche de arcos, entre rocas de granito","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"porche","grupo":"casa","panel":"porche","alt":"El porche por dentro: columnas de granito, arcos de ladrillo y barandilla de celosía","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"porche-arcos","grupo":"casa","panel":"porche","alt":"La dehesa vista desde el porche, entre dos arcos","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"porche-mesa","grupo":"casa","panel":"porche","alt":"El porche con la mesa puesta","w":460,"h":308,"anchos":[460]},{"id":"atardecer","grupo":"casa","panel":"porche","alt":"El porche al atardecer","w":600,"h":402,"anchos":[480]},{"id":"salon","grupo":"casa","panel":"salon","alt":"Salón comedor con chimenea, techo de vigas y un arco de ladrillo","w":1199,"h":802,"anchos":[480,960,1199]},{"id":"cocina","grupo":"casa","panel":"cocina","alt":"Cocina comedor bajo un arco de ladrillo, con la mesa puesta","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"dormitorio","grupo":"casa","panel":"dormitorios","alt":"Dormitorio de matrimonio con cama de forja","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"dormitorio-2","grupo":"casa","panel":"dormitorios","alt":"Dormitorio con dos camas de forja","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"barbacoa","grupo":"casa","panel":"barbacoa","alt":"La barbacoa de piedra bajo una encina, con su mesa","w":1200,"h":802,"anchos":[480,960,1200]},{"id":"escalinata","grupo":"casa","panel":"escalinata","alt":"Escalinata de piedra entre las rocas, subiendo hasta la casa","w":1200,"h":803,"anchos":[480,960,1200]},{"id":"portada","grupo":"casa","panel":"portada","alt":"Portada de piedra con arco y verja; en el muro, la placa de alojamiento turístico","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"camino","grupo":"finca","panel":"portada","alt":"El camino de tierra hacia la casa","w":600,"h":402,"anchos":[480]},{"id":"charca","grupo":"finca","panel":"charca","alt":"La charca de la finca, rodeada de encinas","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"charca-flores","grupo":"primavera","panel":"charca","alt":"La charca con flores moradas en primer plano","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"charca-jaras","grupo":"finca","panel":"charca","alt":"La charca vista entre la vegetación","w":600,"h":402,"anchos":[480]},{"id":"chozo","grupo":"finca","panel":null,"alt":"Chozo redondo de piedra con techo de paja","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"granito","grupo":"finca","panel":null,"alt":"Dehesa de encinas con bolos de granito","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"dehesa-lejos","grupo":"finca","panel":null,"alt":"La dehesa con la casa a lo lejos","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"rocas","grupo":"finca","panel":null,"alt":"Rocas de granito sobre la pradera","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"ovejas","grupo":"finca","panel":null,"alt":"Ovejas sobre las rocas, a la sombra de una encina","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"apero","grupo":"finca","panel":null,"alt":"Un apero antiguo sobre la roca","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"encinas","grupo":"finca","panel":null,"alt":"Encinas sobre la pradera verde","w":600,"h":402,"anchos":[480]},{"id":"pilas","grupo":"finca","panel":null,"alt":"Pilas naturales en el granito, con agua de lluvia","w":600,"h":402,"anchos":[480]},{"id":"senda","grupo":"finca","panel":null,"alt":"Senda entre muros de piedra","w":600,"h":402,"anchos":[480]},{"id":"primavera","grupo":"primavera","panel":null,"alt":"Encinas en primavera, con la hierba alta","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"pradera","grupo":"primavera","panel":null,"alt":"Pradera con flores amarillas y lirios morados","w":1200,"h":804,"anchos":[480,960,1200]},{"id":"margarita","grupo":"primavera","panel":null,"alt":"Una margarita amarilla en la pradera","w":600,"h":402,"anchos":[480]},{"id":"lirios","grupo":"primavera","panel":null,"alt":"Lirios junto a una roca de granito","w":600,"h":402,"anchos":[480]}]</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="js/main.js?v=4f8651ec" defer></script>
+<script src="js/sol.js?v=9893be56" defer data-modulo="sol"></script>
+<script src="js/alrededores.js?v=aebc7d67" defer data-modulo="alrededores"></script>
+</body>
+</html>

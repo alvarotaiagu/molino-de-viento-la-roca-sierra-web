@@ -1,0 +1,406 @@
+{
+ "fotos": [
+  {
+   "id": "dehesa-casa",
+   "origen": "tuscasasrurales/xl_11202_6.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "La casa de piedra en la dehesa, con la luz baja de la tarde",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "fachada",
+   "origen": "tuscasasrurales/xl_11202.jpg",
+   "grupo": "casa",
+   "panel": "porche",
+   "alt": "La casa de piedra con su porche de arcos, entre rocas de granito",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "porche",
+   "origen": "tuscasasrurales/xl_11202_1.jpg",
+   "grupo": "casa",
+   "panel": "porche",
+   "alt": "El porche por dentro: columnas de granito, arcos de ladrillo y barandilla de celosía",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "porche-arcos",
+   "origen": "tuscasasrurales/xl_11202_7.jpg",
+   "grupo": "casa",
+   "panel": "porche",
+   "alt": "La dehesa vista desde el porche, entre dos arcos",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "porche-mesa",
+   "origen": "web/3-460x308.jpg",
+   "grupo": "casa",
+   "panel": "porche",
+   "alt": "El porche con la mesa puesta",
+   "w": 460,
+   "h": 308,
+   "anchos": [
+    460
+   ]
+  },
+  {
+   "id": "atardecer",
+   "origen": "web/p20-600x402.jpg",
+   "grupo": "casa",
+   "panel": "porche",
+   "alt": "El porche al atardecer",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "salon",
+   "origen": "tuscasasrurales/xl_11202_2.jpg",
+   "grupo": "casa",
+   "panel": "salon",
+   "alt": "Salón comedor con chimenea, techo de vigas y un arco de ladrillo",
+   "w": 1199,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1199
+   ]
+  },
+  {
+   "id": "cocina",
+   "origen": "tuscasasrurales/xl_11202_5.jpg",
+   "grupo": "casa",
+   "panel": "cocina",
+   "alt": "Cocina comedor bajo un arco de ladrillo, con la mesa puesta",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "dormitorio",
+   "origen": "tuscasasrurales/xl_11202_3.jpg",
+   "grupo": "casa",
+   "panel": "dormitorios",
+   "alt": "Dormitorio de matrimonio con cama de forja",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "dormitorio-2",
+   "origen": "tuscasasrurales/xl_11202_4.jpg",
+   "grupo": "casa",
+   "panel": "dormitorios",
+   "alt": "Dormitorio con dos camas de forja",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "barbacoa",
+   "origen": "tuscasasrurales/xl_11202_8.jpg",
+   "grupo": "casa",
+   "panel": "barbacoa",
+   "alt": "La barbacoa de piedra bajo una encina, con su mesa",
+   "w": 1200,
+   "h": 802,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "escalinata",
+   "origen": "web/fondo-2000x1339.jpg",
+   "grupo": "casa",
+   "panel": "escalinata",
+   "alt": "Escalinata de piedra entre las rocas, subiendo hasta la casa",
+   "w": 1200,
+   "h": 803,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "portada",
+   "origen": "tuscasasrurales/xl_11202_11.jpg",
+   "grupo": "casa",
+   "panel": "portada",
+   "alt": "Portada de piedra con arco y verja; en el muro, la placa de alojamiento turístico",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "camino",
+   "origen": "web/p17-600x402.jpg",
+   "grupo": "finca",
+   "panel": "portada",
+   "alt": "El camino de tierra hacia la casa",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "charca",
+   "origen": "tuscasasrurales/xl_11202_17.jpg",
+   "grupo": "finca",
+   "panel": "charca",
+   "alt": "La charca de la finca, rodeada de encinas",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "charca-flores",
+   "origen": "tuscasasrurales/xl_11202_18.jpg",
+   "grupo": "primavera",
+   "panel": "charca",
+   "alt": "La charca con flores moradas en primer plano",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "charca-jaras",
+   "origen": "web/p16-600x402.jpg",
+   "grupo": "finca",
+   "panel": "charca",
+   "alt": "La charca vista entre la vegetación",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "chozo",
+   "origen": "tuscasasrurales/xl_11202_13.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Chozo redondo de piedra con techo de paja",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "granito",
+   "origen": "tuscasasrurales/xl_11202_15.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Dehesa de encinas con bolos de granito",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "dehesa-lejos",
+   "origen": "tuscasasrurales/xl_11202_16.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "La dehesa con la casa a lo lejos",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "rocas",
+   "origen": "tuscasasrurales/xl_11202_19.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Rocas de granito sobre la pradera",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "ovejas",
+   "origen": "tuscasasrurales/xl_11202_14.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Ovejas sobre las rocas, a la sombra de una encina",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "apero",
+   "origen": "tuscasasrurales/xl_11202_9.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Un apero antiguo sobre la roca",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "encinas",
+   "origen": "web/p13-600x402.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Encinas sobre la pradera verde",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "pilas",
+   "origen": "web/p14-600x402.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Pilas naturales en el granito, con agua de lluvia",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "senda",
+   "origen": "web/p21-600x402.jpg",
+   "grupo": "finca",
+   "panel": null,
+   "alt": "Senda entre muros de piedra",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "primavera",
+   "origen": "tuscasasrurales/xl_11202_20.jpg",
+   "grupo": "primavera",
+   "panel": null,
+   "alt": "Encinas en primavera, con la hierba alta",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "pradera",
+   "origen": "tuscasasrurales/xl_11202_21.jpg",
+   "grupo": "primavera",
+   "panel": null,
+   "alt": "Pradera con flores amarillas y lirios morados",
+   "w": 1200,
+   "h": 804,
+   "anchos": [
+    480,
+    960,
+    1200
+   ]
+  },
+  {
+   "id": "margarita",
+   "origen": "web/p12-600x402.jpg",
+   "grupo": "primavera",
+   "panel": null,
+   "alt": "Una margarita amarilla en la pradera",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  },
+  {
+   "id": "lirios",
+   "origen": "web/p22-600x402.jpg",
+   "grupo": "primavera",
+   "panel": null,
+   "alt": "Lirios junto a una roca de granito",
+   "w": 600,
+   "h": 402,
+   "anchos": [
+    480
+   ]
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+node_modules/
+scripts/fuentes/
+scripts/nombres-privados.txt
+screenshots/
+.DS_Store
+Thumbs.db
+__pycache__/

@@ -1,0 +1,12 @@
+{
+ "origen": { "nombre": "A.R. Molino de Viento", "osm": "node/4702404137", "lat": 39.1101425, "lon": -6.6737914, "nota": "Nodo de OSM etiquetado «Casa Rural Molino de Viento» (tourism=hotel); casa con la pista del panorama de Google (39.1100, -6.6741)." },
+ "fuente": "OSRM sobre OpenStreetMap (routing.openstreetmap.de, perfil coche y a pie)",
+ "fecha": "2026-10-04",
+ "destinos": [
+  { "nombre": "Badajoz", "destino": "nodo place=city 240423001", "km": 41.2, "min": 43 },
+  { "nombre": "Mérida", "destino": "plaza de España (38.9161, -6.3437)", "km": 50.4, "min": 57 },
+  { "nombre": "Cáceres", "destino": "plaza Mayor (39.4746, -6.3714)", "km": 54.4, "min": 52 },
+  { "nombre": "Montijo", "destino": "nodo place=town 1470838554", "km": 26.0, "min": 32 },
+  { "nombre": "La Roca de la Sierra (centro)", "destino": "nodo place=village 252266788", "km": 1.5, "min": 7, "a_pie_min": 20 }
+ ]
+}

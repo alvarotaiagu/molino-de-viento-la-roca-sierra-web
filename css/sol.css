@@ -1,0 +1,36 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Módulo «Del saliente al poniente» (data-modulo="sol").
+   El porche visto desde dentro: ocho arcos con su celosía. Con el scroll el sol
+   los cruza de un extremo a otro y el cielo pasa del amanecer al atardecer.
+   Se quita entero con node scripts/quitar-sol.mjs; estilos.css no depende de él.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.sol { padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(3rem, 6vw, 5rem); }
+.sol__cabeza { max-width: var(--ancho); margin: 0 auto 2.2rem; padding: 0 var(--margen); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 1rem 3rem; align-items: end; }
+.sol__cabeza .antetitulo { grid-column: 1 / -1; margin-bottom: 0; }
+.sol__cabeza p:last-child { color: var(--granito); }
+.sol__escena {
+  position: relative; overflow: hidden;
+  height: min(88svh, 760px); min-height: 380px;
+  --cielo-arriba: #E7B79E; --cielo-abajo: #F5DCBA; --astro: #FFB27A;
+}
+.sol__cielo { position: absolute; inset: 0; background: linear-gradient(180deg, var(--cielo-arriba), var(--cielo-abajo)); }
+.sol__dibujo { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.sol__astro { fill: var(--astro); }
+.sol__muro { fill: var(--encina); }
+.sol__celosia { fill: none; stroke: var(--teja); stroke-width: 4; stroke-linecap: round; }
+.sol__rotulo { position: absolute; top: clamp(1rem, 3vh, 2rem); font: 700 .78rem/1 var(--tipo-texto); letter-spacing: .22em; text-transform: uppercase; color: var(--cal); }
+.sol__rotulo--saliente { left: var(--margen); }
+.sol__rotulo--poniente { right: var(--margen); }
+.sol__rotulo--saliente::before { content: "← "; color: var(--lima); }
+.sol__rotulo--poniente::after { content: " →"; color: var(--lima); }
+.sol__final { display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); gap: 2rem clamp(2rem, 5vw, 5rem); align-items: center; max-width: var(--ancho); margin: clamp(2.5rem, 5vw, 4rem) auto 0; padding: 0 var(--margen); }
+.sol__foto { border-radius: 999px 999px 0 0; overflow: hidden; max-width: 600px; }
+.sol__foto img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; }
+.sol__cita p { font: 400 clamp(1.35rem, 2.4vw, 2rem)/1.35 var(--tipo-titular); max-width: 30ch; }
+.sol__cita footer { margin-top: 1rem; font-size: .82rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--granito); }
+@media (max-width: 860px) {
+  .sol__cabeza { grid-template-columns: minmax(0, 1fr); }
+  .sol__escena { height: min(70svh, 520px); }
+  .sol__dibujo { top: -22%; height: 122%; }   /* menos muro encima de los arcos */
+  .sol__final { grid-template-columns: minmax(0, 1fr); }
+}

@@ -1,0 +1,9 @@
+{
+ "telefono": "676 516 272",
+ "telefonoEnlace": "+34676516272",
+ "fijo": "924 406 375",
+ "fijoEnlace": "+34924406375",
+ "email": "info@ar-molinodeviento.com",
+ "whatsapp": null,
+ "precio": { "importe": 33, "texto": "por persona y noche", "minimo": "Mínimo, dos noches." }
+}
