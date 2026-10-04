@@ -393,9 +393,13 @@
       if (anclaje) { anclaje.kill(true); anclaje = null; }
       if (gsapReady) gsap.set(carril, { clearProps: 'transform' });
       marco.classList.remove('es-anclado');
-      var anclar = movimiento && densidad() === 'aspas' && !esMovil();
+      /* anclar solo si la pantalla tiene altura suficiente para que quepan el título + los arcos */
+      var altoMin = 580;
+      var anclar = movimiento && densidad() === 'aspas' && !esMovil() && window.innerHeight >= altoMin;
       if (!anclar) { foco(); trazar(); return; }
       marco.classList.add('es-anclado');
+      /* resetear x antes de crear el ST para evitar el arrastre de un ciclo anterior */
+      gsap.set(carril, { x: 0 });
       var distancia = function () { return Math.max(0, carril.scrollWidth - window.innerWidth); };
       anclaje = ST.create({
         trigger: '#arcos', start: 'top top', end: function () { return '+=' + distancia(); },
@@ -406,10 +410,12 @@
       foco(); trazar();
     }
     montar();
-    var anchoPrevio = window.innerWidth;
+    var anchoPrevio = window.innerWidth, altoPrevio = window.innerHeight;
     window.addEventListener('resize', esperar(function () {
-      if (Math.abs(window.innerWidth - anchoPrevio) < 2) return;
-      anchoPrevio = window.innerWidth;
+      var cambioAncho = Math.abs(window.innerWidth - anchoPrevio) >= 2;
+      var cambioAlto  = Math.abs(window.innerHeight - altoPrevio) >= 2;
+      if (!cambioAncho && !cambioAlto) return;
+      anchoPrevio = window.innerWidth; altoPrevio = window.innerHeight;
       montar(); refrescar();
     }, 200));
     document.addEventListener('densidad-cambiada', function () { montar(); refrescar(); });
